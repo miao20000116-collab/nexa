@@ -42,6 +42,8 @@ COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 # Shared showcase samples (visible to all accounts + guests after seed)
 COPY --from=builder /app/data ./data
+# Writable local fallback for showcase seed / file-store merge
+RUN mkdir -p .nexa-data && chown -R nexa:nexa /app
 
 USER nexa
 EXPOSE 3000

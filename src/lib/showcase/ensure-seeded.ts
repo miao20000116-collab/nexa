@@ -52,9 +52,20 @@ async function ensureFileStoreCopies() {
     } catch {
       continue;
     }
-    await fs.mkdir(path.dirname(to), { recursive: true });
-    // Always refresh from bundled showcase so deploy + local stay aligned.
-    await fs.copyFile(from, to);
+    try {
+      await fs.mkdir(path.dirname(to), { recursive: true });
+      // Always refresh from bundled showcase so deploy + local stay aligned.
+      await fs.copyFile(from, to);
+    } catch (err) {
+      // Production images often run as non-root without writable .nexa-data.
+      // DB upsert below is enough for shared visibility.
+      const code =
+        err && typeof err === "object" && "code" in err
+          ? String((err as { code?: string }).code)
+          : "";
+      if (code === "EACCES" || code === "EROFS") continue;
+      throw err;
+    }
   }
 }
 
