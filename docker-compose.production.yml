@@ -61,6 +61,9 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: unless-stopped
+    # Host nginx proxies to 127.0.0.1:3000
+    ports:
+      - "3000:3000"
     env_file:
       - .env.production
     environment:
