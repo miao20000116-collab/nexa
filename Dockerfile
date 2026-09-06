@@ -40,6 +40,8 @@ COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
+# Shared showcase samples (visible to all accounts + guests after seed)
+COPY --from=builder /app/data ./data
 
 USER nexa
 EXPOSE 3000

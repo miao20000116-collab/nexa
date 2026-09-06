@@ -47,6 +47,9 @@ let cacheInstance: CacheProvider | null = null;
 
 export function getCacheProvider(): CacheProvider {
   if (!cacheInstance) {
+    // In-process memory cache: correct for single-instance local/dev only.
+    // Multi-instance production (Tencent web replicas) should wire Redis via
+    // SEARCH_CACHE_REDIS_URL when available; bump result-id-v* on relevance changes.
     cacheInstance = new MemoryCacheProvider();
   }
   return cacheInstance;
@@ -56,4 +59,10 @@ export function getCacheTTL(intent: SearchIntent, resultCount = 1): number {
   // Never cache empty responses — flaky providers should not lock empty pages
   if (resultCount === 0) return 0;
   return TTL_BY_INTENT[intent] ?? 600;
+}
+
+/** Minimum average relevance to allow caching a SERP. */
+export function isCacheWorthy(avgScore: number, resultCount: number): boolean {
+  if (resultCount === 0) return false;
+  return avgScore >= 0.18;
 }

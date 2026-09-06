@@ -11,6 +11,7 @@ import {
   defaultTimeline,
   emptyContentForPlatform,
 } from "@/modules/create/constants";
+import { ownsOrSharedCreation } from "@/lib/showcase/shared-catalog";
 
 const DATA_DIR = path.join(process.cwd(), ".nexa-data");
 
@@ -147,9 +148,7 @@ export async function fileStoreListProjects(
     );
     projects.push(normalizeProject(JSON.parse(raw) as CreationProject));
   }
-  const filtered = projects.filter((p) =>
-    userId ? p.userId === userId : !p.userId
-  );
+  const filtered = projects.filter((p) => ownsOrSharedCreation(userId, p));
   return filtered.sort(
     (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
   );

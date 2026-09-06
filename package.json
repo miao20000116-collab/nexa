@@ -13,6 +13,7 @@
     "db:migrate": "prisma migrate deploy",
     "db:migrate:dev": "prisma migrate dev",
     "db:push": "prisma db push",
+    "seed:showcase": "npx tsx scripts/seed-showcase.ts",
     "worker": "npx tsx scripts/worker.ts",
     "ai:smoke": "npx tsx scripts/ai-smoke-rag.ts",
     "ai:smoke:v22": "npx tsx scripts/ai-smoke-v22.ts",

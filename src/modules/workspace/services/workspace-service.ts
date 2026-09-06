@@ -199,14 +199,30 @@ export async function updateWorkspaceRecord(
 export async function listWorkspaces(): Promise<Workspace[]> {
   const session = await getSession();
   const userId = session.user?.id ?? null;
+  const { ensureShowcaseSeeded } = await import(
+    "@/lib/showcase/ensure-seeded"
+  );
+  const { SHARED_WORKSPACE_IDS } = await import(
+    "@/lib/showcase/shared-catalog"
+  );
+  await ensureShowcaseSeeded();
+
   const dbAvailable = await isDatabaseAvailable();
   if (dbAvailable) {
     const list = await prisma.workspace.findMany({
-      where: userId ? { userId } : { userId: null },
+      where: {
+        OR: [
+          userId ? { userId } : { userId: null },
+          { id: { in: [...SHARED_WORKSPACE_IDS] } },
+        ],
+      },
       include: { sources: true },
       orderBy: { updatedAt: "desc" },
     });
-    const mapped = list.map(mapDbWorkspace);
+    const seen = new Set<string>();
+    const mapped = list
+      .map(mapDbWorkspace)
+      .filter((ws) => (seen.has(ws.id) ? false : (seen.add(ws.id), true)));
     // Merge V3 items/versions from file store (same as getWorkspace).
     return Promise.all(
       mapped.map(async (ws) => {

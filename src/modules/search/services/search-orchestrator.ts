@@ -9,24 +9,19 @@ import type {
   SearchStatus,
 } from "../types";
 import { createSearXNGProvider } from "../providers/searxng-provider";
+import { createBingHtmlProvider } from "../providers/bing-html-provider";
 import { createWikipediaProvider } from "../providers/wikipedia-provider";
 import { createYouTubeProvider } from "../providers/youtube-provider";
 import { createSocialSearchProvider } from "../providers/social-provider";
 import { classifyIntent } from "./intent-classifier";
 import { normalizeQuery, generateCacheKey } from "./query-normalizer";
-import { rewriteQuery } from "./query-rewriter";
+import { rewriteQuery, pickRecallQuery, cleanQuery } from "./query-rewriter";
 import {
   routeSources,
   expandSocialQuery,
   detectPreferredSocialPlatforms,
 } from "./source-router";
 import { deduplicateResults, normalizeResults } from "./deduplicator";
-import { rankResults } from "./ranker";
-import {
-  computeRelevanceScore,
-  filterByRelevance,
-  relevanceThresholdForIntent,
-} from "./relevance-validator";
 import { getCacheProvider, getCacheTTL } from "./cache-service";
 import { generateOverview } from "@/modules/ai/router/ai-gateway";
 import { AIGateway } from "@/modules/ai/gateway/ai-gateway";
@@ -34,7 +29,7 @@ import { trackEvent } from "@/lib/analytics";
 
 const isDebugMode = () => process.env.SEARCH_DEBUG === "true";
 
-const PROVIDER_TIMEOUT_MS = Number(process.env.SEARCH_PROVIDER_TIMEOUT_MS) || 12_000;
+const PROVIDER_TIMEOUT_MS = Number(process.env.SEARCH_PROVIDER_TIMEOUT_MS) || 28_000;
 
 function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
   return new Promise((resolve, reject) => {
@@ -56,31 +51,53 @@ function logProviderError(provider: string, error: unknown) {
   console.error(`[Search] Provider "${provider}" failed:`, message);
 }
 
+/** Keep engine SERP order; only assign stable descending scores for UI/overview. */
+function preserveEngineOrder(results: SearchResult[]): SearchResult[] {
+  return results.map((r, i) => ({
+    ...r,
+    rankScore: r.rankScore && r.rankScore > 0 ? r.rankScore : Math.max(0.05, 1 - i * 0.04),
+  }));
+}
+
+function mergeByUrl(...lists: SearchResult[][]): SearchResult[] {
+  const seen = new Set<string>();
+  const out: SearchResult[] = [];
+  for (const list of lists) {
+    for (const r of list) {
+      const key = (r.url || "").split("#")[0];
+      if (!key || seen.has(key)) continue;
+      seen.add(key);
+      out.push(r);
+    }
+  }
+  return out;
+}
+
 function pickSearchQuery(rewritten: string[], original: string): string {
-  // Prefer multi-word cleaned query over single acronym when available
   const multi = rewritten.find((q) => q.includes(" ") && q.length > 3);
   if (multi) return multi;
   return rewritten[0] ?? original;
 }
 
+/**
+ * Ordinary-engine style query for providers.
+ * Long chatty Chinese questions are compressed only so headless Bing does not
+ * fall into character-dictionary SERPs — results are never relevance-filtered.
+ */
+function buildWebQuery(original: string, rewritten: string[]): string {
+  return pickRecallQuery(original) || cleanQuery(original) || pickSearchQuery(rewritten, original);
+}
+
 function buildNewsQuery(original: string, rewritten: string[]): string {
-  const entity =
-    rewritten.find((q) => /^[A-Za-z][A-Za-z0-9 ._-]{1,40}$/.test(q)) ||
-    rewritten.find((q) => /人工智能|OpenAI|AI/.test(q)) ||
-    pickSearchQuery(rewritten, original);
-  // Keep Chinese news queries in Chinese for baidu/sogou; add light English twin later
+  const entity = pickSearchQuery(rewritten, original);
   if (/[\u4e00-\u9fff]/.test(original)) {
     if (/新闻|资讯|最近|发生了什么/.test(original)) return original;
     return `${entity} 新闻`;
   }
-  if (/openai/i.test(original) || /openai/i.test(entity)) return "OpenAI news";
-  if (/人工智能|artificial intelligence/i.test(original) || entity === "人工智能")
-    return "artificial intelligence AI news";
   return `${entity} news`;
 }
 
 function buildImageQuery(original: string, rewritten: string[]): string {
-  if (/眼镜/.test(original)) return "AI glasses 智能眼镜";
   const cleaned = pickSearchQuery(rewritten, original)
     .replace(/图片|照片|图像/g, "")
     .trim();
@@ -89,6 +106,7 @@ function buildImageQuery(original: string, rewritten: string[]): string {
 
 export class SearchOrchestrator {
   private webProvider = createSearXNGProvider();
+  private bingHtmlProvider = createBingHtmlProvider();
   private wikiProvider = createWikipediaProvider();
   private youtubeProvider = createYouTubeProvider();
   private socialProvider = createSocialSearchProvider(this.webProvider);
@@ -96,15 +114,23 @@ export class SearchOrchestrator {
 
   async search(
     query: string,
-    opts?: { includeOverview?: boolean; userId?: string | null; accountId?: string | null; jobId?: string }
+    opts?: {
+      includeOverview?: boolean;
+      userId?: string | null;
+      accountId?: string | null;
+      jobId?: string;
+      /** 1-based page (web/images/videos pagination) */
+      page?: number;
+    }
   ): Promise<SearchResponse> {
     trackEvent("search_started", { query });
 
+    const page = Math.max(1, opts?.page ?? 1);
     const normalizedQuery = normalizeQuery(query);
     const intent: SearchIntent = classifyIntent(query);
     const rewrittenQueries = rewriteQuery(query);
-    // Search result identity rules changed; avoid serving pre-fix cached ids.
-    const cacheKey = `result-id-v2:${generateCacheKey(normalizedQuery, intent)}`;
+    // v16: multi-channel (web+image+video) + pagination
+    const cacheKey = `result-id-v16:p${page}:${generateCacheKey(normalizedQuery, intent)}`;
 
     const cached = await this.cache.get<SearchResponse>(cacheKey);
     if (cached) {
@@ -124,58 +150,36 @@ export class SearchOrchestrator {
     const tasks: Promise<void>[] = [];
 
     const primaryQuery = pickSearchQuery(rewrittenQueries, query);
-    const webQuery =
-      intent === "knowledge" && rewrittenQueries.includes("RAG")
-        ? "RAG retrieval augmented generation"
-        : /眼镜|glasses/i.test(query)
-          ? "AI glasses 智能眼镜 AI眼镜"
-          : primaryQuery;
+    const webQuery = buildWebQuery(query, rewrittenQueries);
 
-    if (routes.web && this.webProvider.isConfigured()) {
+    if (routes.web) {
       providersCalled.push("web");
       tasks.push(
         this.timedRetrieve(
           "web",
           async () => {
-            const [cn, intl] = await Promise.allSettled([
-              this.webProvider.search({
-                query: webQuery,
-                categories: ["general"],
-                maxResults: intent === "knowledge" ? 10 : 12,
-                engines: ["baidu", "sogou"],
-              }),
-              this.webProvider.search({
-                query: webQuery,
-                categories: ["general"],
-                maxResults: intent === "knowledge" ? 10 : 12,
-                engines: ["yandex", "bing"],
-              }),
-            ]);
-            const merged = [
-              ...(cn.status === "fulfilled" ? cn.value : []),
-              ...(intl.status === "fulfilled" ? intl.value : []),
-            ];
-            if (cn.status === "rejected" && intl.status === "rejected") {
-              throw cn.reason instanceof Error
-                ? cn.reason
-                : new Error(String(cn.reason));
-            }
-            if (/眼镜|glasses/i.test(query)) {
-              const extra = await this.webProvider.search({
-                query: "智能眼镜",
-                categories: ["general"],
-                maxResults: 10,
-                engines: ["baidu", "sogou", "yandex"],
-              });
-              return [...merged, ...extra];
-            }
-            return merged.length
-              ? merged
-              : this.webProvider.search({
+            const bingHits = await this.bingHtmlProvider.search({
+              query: webQuery,
+              maxResults: 20,
+              page,
+            });
+
+            let sxHits: SearchResult[] = [];
+            if (this.webProvider.isConfigured()) {
+              try {
+                sxHits = await this.webProvider.search({
                   query: webQuery,
                   categories: ["general"],
                   maxResults: 16,
+                  engines: ["bing", "baidu"],
+                  page,
                 });
+              } catch {
+                /* optional */
+              }
+            }
+
+            return mergeByUrl(bingHits, sxHits);
           },
           allResults,
           providerErrors,
@@ -183,9 +187,6 @@ export class SearchOrchestrator {
           resultsReturned
         )
       );
-    } else if (routes.web) {
-      providerErrors.web = "SEARXNG_BASE_URL is not configured";
-      logProviderError("web", providerErrors.web);
     }
 
     if (routes.news && this.webProvider.isConfigured()) {
@@ -246,57 +247,55 @@ export class SearchOrchestrator {
       );
     }
 
-    if (routes.image && this.webProvider.isConfigured()) {
+    if (routes.image) {
       providersCalled.push("images");
       const imageQuery = buildImageQuery(query, rewrittenQueries);
       tasks.push(
         this.timedRetrieve(
           "images",
           async () => {
-            const [cn, intl] = await Promise.allSettled([
-              this.webProvider.search({
-                query: imageQuery,
-                categories: ["images"],
-                maxResults: 16,
-                engines: ["baidu images", "sogou images"],
-              }),
-              this.webProvider.search({
-                query: imageQuery,
-                categories: ["images"],
-                maxResults: 12,
-                engines: ["bing images", "google images"],
-              }),
-            ]);
-            const hits = [
-              ...(cn.status === "fulfilled" ? cn.value : []),
-              ...(intl.status === "fulfilled" ? intl.value : []),
-            ];
-            const filtered = hits.filter(
-              (r) =>
-                r.sourceType === "image" ||
-                r.type === "image" ||
-                Boolean(r.thumbnail)
-            );
-            // 有缩略图优先；没有也保留条目，前端直接展示对应标题/链接
-            const preferred = filtered.filter((r) => Boolean(r.thumbnail));
-            const kept = preferred.length ? preferred : filtered;
-            if (
-              kept.length === 0 &&
-              cn.status === "rejected" &&
-              intl.status === "rejected"
-            ) {
-              throw cn.reason instanceof Error
-                ? cn.reason
-                : new Error(String(cn.reason));
+            let hits: SearchResult[] = [];
+            if (this.webProvider.isConfigured()) {
+              try {
+                const [cn, intl] = await Promise.allSettled([
+                  this.webProvider.search({
+                    query: imageQuery,
+                    categories: ["images"],
+                    maxResults: 20,
+                    engines: ["baidu images", "sogou images", "bing images"],
+                    page,
+                  }),
+                  this.webProvider.search({
+                    query: imageQuery,
+                    categories: ["images"],
+                    maxResults: 16,
+                    engines: ["bing images", "google images"],
+                    page,
+                  }),
+                ]);
+                hits = [
+                  ...(cn.status === "fulfilled" ? cn.value : []),
+                  ...(intl.status === "fulfilled" ? intl.value : []),
+                ];
+              } catch {
+                /* fall through */
+              }
             }
-            if (kept.length > 0) return kept;
-            return (
-              await this.webProvider.search({
-                query: imageQuery,
-                categories: ["images"],
-                maxResults: 20,
-              })
-            ).filter(
+            if (hits.length < 4) {
+              try {
+                hits = mergeByUrl(
+                  hits,
+                  await this.bingHtmlProvider.searchImages({
+                    query: imageQuery,
+                    maxResults: 24,
+                    page,
+                  })
+                );
+              } catch {
+                /* ignore */
+              }
+            }
+            return hits.filter(
               (r) =>
                 r.sourceType === "image" ||
                 r.type === "image" ||
@@ -312,7 +311,7 @@ export class SearchOrchestrator {
     }
 
     if (routes.video) {
-      if (this.youtubeProvider.isConfigured()) {
+      if (this.youtubeProvider.isConfigured() && page === 1) {
         providersCalled.push("youtube");
         tasks.push(
           this.timedRetrieve(
@@ -320,7 +319,7 @@ export class SearchOrchestrator {
             () =>
               this.youtubeProvider.search({
                 query: primaryQuery,
-                maxResults: 10,
+                maxResults: 12,
               }),
             allResults,
             providerErrors,
@@ -329,45 +328,65 @@ export class SearchOrchestrator {
           )
         );
       }
-      if (this.webProvider.isConfigured()) {
-        providersCalled.push("videos");
-        tasks.push(
-          this.timedRetrieve(
-            "videos",
-            async () => {
-              const hits = await this.webProvider.search({
-                query: primaryQuery,
-                categories: ["videos"],
-                maxResults: 16,
-                engines: [
-                  "sogou videos",
-                  "bing videos",
-                  "bilibili",
-                  "youtube",
-                  "google videos",
-                ],
-              });
-              // 不过度过滤：有视频类别或视频链接就保留，直接展示对应条目
-              return hits.filter(
-                (r) =>
-                  r.sourceType === "video" ||
-                  r.type === "video" ||
-                  r.platform === "youtube" ||
-                  /youtube\.com|youtu\.be|bilibili\.com|b23\.tv|douyin\.com|tiktok\.com/i.test(
-                    r.url
-                  )
-              );
-            },
-            allResults,
-            providerErrors,
-            providerLatency,
-            resultsReturned
-          )
-        );
-      }
+      providersCalled.push("videos");
+      tasks.push(
+        this.timedRetrieve(
+          "videos",
+          async () => {
+            let hits: SearchResult[] = [];
+            if (this.webProvider.isConfigured()) {
+              try {
+                hits = await this.webProvider.search({
+                  query: primaryQuery,
+                  categories: ["videos"],
+                  maxResults: 16,
+                  engines: [
+                    "sogou videos",
+                    "bing videos",
+                    "bilibili",
+                    "youtube",
+                    "google videos",
+                  ],
+                  page,
+                });
+              } catch {
+                /* fall through */
+              }
+            }
+            if (hits.length < 3) {
+              try {
+                hits = mergeByUrl(
+                  hits,
+                  await this.bingHtmlProvider.searchVideos({
+                    query: webQuery,
+                    maxResults: 16,
+                    page,
+                  })
+                );
+              } catch {
+                /* ignore */
+              }
+            }
+            return hits.filter(
+              (r) =>
+                r.sourceType === "video" ||
+                r.type === "video" ||
+                r.platform === "youtube" ||
+                r.platform === "bilibili" ||
+                /youtube\.com|youtu\.be|bilibili\.com|b23\.tv|douyin\.com|tiktok\.com|youku|iqiyi/i.test(
+                  r.url
+                )
+            );
+          },
+          allResults,
+          providerErrors,
+          providerLatency,
+          resultsReturned
+        )
+      );
     }
 
-    if (routes.wikipedia) {
+    if (routes.wikipedia && page === 1) {
       providersCalled.push("wikipedia");
       tasks.push(
         this.timedRetrieve(
@@ -381,7 +400,7 @@ export class SearchOrchestrator {
       );
     }
 
-    if (shouldSearchSocial && this.webProvider.isConfigured()) {
+    if (shouldSearchSocial && this.webProvider.isConfigured() && page === 1) {
       providersCalled.push("social");
       const socialQuery = expandSocialQuery(query) || primaryQuery;
       tasks.push(
@@ -399,7 +418,7 @@ export class SearchOrchestrator {
           resultsReturned
         )
       );
-    } else if (shouldSearchSocial) {
+    } else if (shouldSearchSocial && page === 1) {
       providerErrors.social = "SEARXNG_BASE_URL is not configured";
       logProviderError("social", providerErrors.social);
     }
@@ -407,23 +426,11 @@ export class SearchOrchestrator {
     await Promise.allSettled(tasks);
 
     const preFilterCount = allResults.length;
-    let results = normalizeResults(deduplicateResults(allResults));
-    const threshold = relevanceThresholdForIntent(intent);
-    const { kept, filtered } = filterByRelevance(results, query, threshold);
-    results = kept;
-    // Soft fallback: if relevance wiped everything but providers returned hits,
-    // keep the least-bad filtered items rather than locking an empty page.
-    if (results.length === 0 && filtered.length > 0) {
-      results = filtered
-        .map((r) => ({
-          ...r,
-          rankScore: Math.max(computeRelevanceScore(r, query), 0.01),
-          retrievalMethod: `${r.retrievalMethod ?? "search"}_soft_relevance`,
-        }))
-        .sort((a, b) => (b.rankScore ?? 0) - (a.rankScore ?? 0))
-        .slice(0, Math.min(8, filtered.length));
-    }
-    results = rankResults(results, normalizedQuery, intent);
+    // Passthrough: dedupe only. No relevance filter. Preserve engine order for
+    // workspace / create (title, url, snippet, thumbnail stay intact).
+    let results = preserveEngineOrder(
+      normalizeResults(deduplicateResults(allResults))
+    );
 
     // SearXNG can reuse an item id across category/engine responses. React
     // result grids need keys unique across the entire merged response.
@@ -498,6 +505,9 @@ export class SearchOrchestrator {
       overview,
       overviewStatus,
       channels,
+      page,
+      // Enough hits on this page ⇒ likely another page exists
+      hasMore: results.length >= 8,
     };
 
     if (isDebugMode()) {
@@ -509,14 +519,15 @@ export class SearchOrchestrator {
         providersCalled,
         providerLatency,
         resultsReturned,
-        resultsFiltered: preFilterCount - results.length + filtered.length,
+        resultsFiltered: Math.max(0, preFilterCount - results.length),
         providerErrors,
       };
       console.log("[Search Debug]", JSON.stringify(response.debug, null, 2));
     }
 
     const ttl = getCacheTTL(intent, results.length);
-    if (ttl > 0) {
+    // Cache any non-empty SERP (passthrough mode — no on-topic gate)
+    if (ttl > 0 && results.length > 0) {
       await this.cache.set(cacheKey, response, ttl);
     }
 

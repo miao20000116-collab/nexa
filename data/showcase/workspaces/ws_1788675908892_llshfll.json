@@ -1,0 +1,40 @@
+{
+  "id": "ws_1788675908892_llshfll",
+  "userId": null,
+  "name": "西红柿炒鸡蛋研究",
+  "status": "active",
+  "createdAt": "2026-09-06T06:25:08.892Z",
+  "updatedAt": "2026-09-06T17:30:35.925Z",
+  "sources": [
+    {
+      "id": "src_1788675908896_fjbc6hh",
+      "workspaceId": "ws_1788675908892_llshfll",
+      "searchResultId": null,
+      "title": "西红柿炒鸡蛋，很多人第一步就做错了！教你正确做法",
+      "url": "https://zhuanlan.zhihu.com/p/1892861094340576101",
+      "platform": "web",
+      "sourceType": "web",
+      "snippet": "纠正先炒蛋/先炒西红柿的误区，讲解去皮与调味细节",
+      "author": null,
+      "publishedAt": null,
+      "thumbnail": null,
+      "addedAt": "2026-09-06T06:25:10.348Z"
+    },
+    {
+      "id": "src_1788675908901_hylgurs",
+      "workspaceId": "ws_1788675908892_llshfll",
+      "searchResultId": null,
+      "title": "教你做美味的西红柿炒鸡蛋，细节不到位就不好吃",
+      "url": "http://n.sinaimg.cn/sinacn17/377/w1777h1000/20180710/ff93-hezpzwu8652438.png",
+      "platform": "web",
+      "sourceType": "image",
+      "snippet": "糊锅与细节对比类参考封面",
+      "author": null,
+      "publishedAt": null,
+      "thumbnail": "http://n.sinaimg.cn/sinacn17/377/w1777h1000/20180710/ff93-hezpzwu8652438.png",
+      "addedAt": "2026-09-06T06:25:10.348Z"
+    }
+  ],
+  "items": [],
+  "versions": []
+}

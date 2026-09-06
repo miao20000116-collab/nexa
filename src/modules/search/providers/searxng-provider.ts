@@ -21,7 +21,7 @@ interface SearXNGResponse {
   results?: SearXNGResult[];
 }
 
-const DEFAULT_TIMEOUT = 10000;
+const DEFAULT_TIMEOUT = 20000;
 
 const NEWS_DOMAINS = [
   "reuters.com",
@@ -243,6 +243,11 @@ export class SearXNGProvider implements WebSearchProvider {
       params.set("engines", options.engines.join(","));
     }
 
+    const page = Math.max(1, options.page ?? 1);
+    if (page > 1) {
+      params.set("pageno", String(page));
+    }
+
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), this.timeout);
 
@@ -288,7 +293,7 @@ export class SearXNGProvider implements WebSearchProvider {
     return this.search({
       query: `site:${site} ${query}`,
       maxResults,
-      engines: ["baidu", "sogou", "yandex", "bing"],
+      engines: ["bing", "baidu"],
     });
   }
 }

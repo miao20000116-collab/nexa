@@ -116,6 +116,10 @@ export interface SearchResponse {
   overview: AIOverview | null;
   overviewStatus?: OverviewStatus;
   channels?: Partial<Record<string, ChannelStatus>>;
+  /** 1-based page that produced these results */
+  page?: number;
+  /** True when another page is likely available */
+  hasMore?: boolean;
   debug?: SearchDebugInfo;
 }
 
@@ -126,6 +130,8 @@ export interface WebSearchOptions {
   maxResults?: number;
   /** Prefer specific SearXNG engines (comma-separated names). */
   engines?: string[];
+  /** 1-based page for Bing / SearXNG pagination */
+  page?: number;
 }
 
 export interface KnowledgeSearchOptions {

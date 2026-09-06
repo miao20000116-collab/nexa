@@ -1,0 +1,26 @@
+{
+  "id": "ws_1788673467325_j8uwym3",
+  "userId": null,
+  "name": "西红柿炒鸡蛋 · 创作参考验收",
+  "status": "active",
+  "createdAt": "2026-09-06T05:44:27.325Z",
+  "updatedAt": "2026-09-06T17:30:35.925Z",
+  "sources": [
+    {
+      "id": "src_1788673467328_v6jcf7y",
+      "workspaceId": "ws_1788673467325_j8uwym3",
+      "searchResultId": null,
+      "title": "西红柿炒鸡蛋家常做法参考（B站）",
+      "url": "http://www.bilibili.com/video/av1651436418",
+      "platform": "bilibili",
+      "sourceType": "video",
+      "snippet": "西红柿炒鸡蛋做法与常见误区参考",
+      "author": null,
+      "publishedAt": null,
+      "thumbnail": null,
+      "addedAt": "2026-09-06T05:44:27.328Z"
+    }
+  ],
+  "items": [],
+  "versions": []
+}

@@ -7,6 +7,7 @@ import type {
   SourceSnapshot,
 } from "@/modules/workspace/types";
 import { generateWorkspaceName } from "@/modules/workspace/services/workspace-name";
+import { ownsOrSharedWorkspace } from "@/lib/showcase/shared-catalog";
 
 const DATA_DIR = path.join(process.cwd(), ".nexa-data");
 const workspaceWrites = new Map<string, Promise<void>>();
@@ -186,7 +187,7 @@ export async function fileStoreListWorkspaces(
     }
   }
   const filtered = workspaces.filter((ws) =>
-    userId ? ws.userId === userId : !ws.userId
+    ownsOrSharedWorkspace(userId, ws)
   );
   return filtered.sort(
     (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()

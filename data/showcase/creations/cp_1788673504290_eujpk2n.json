@@ -1,0 +1,484 @@
+{
+  "id": "cp_1788673504290_eujpk2n",
+  "userId": null,
+  "title": "你的西红柿炒鸡蛋可能第一步就错了",
+  "goal": "根据西红柿炒鸡蛋资料生成一条 30 秒短视频",
+  "contentType": "short_video",
+  "platform": "douyin",
+  "status": "ready",
+  "brief": null,
+  "workspaceId": "ws_1788673467325_j8uwym3",
+  "startMode": "workspace",
+  "timeline": [
+    {
+      "id": "goal",
+      "label": "目标",
+      "status": "done"
+    },
+    {
+      "id": "context",
+      "label": "上下文",
+      "status": "done"
+    },
+    {
+      "id": "plan",
+      "label": "内容计划",
+      "status": "pending"
+    },
+    {
+      "id": "draft",
+      "label": "草稿",
+      "status": "pending"
+    },
+    {
+      "id": "adapt",
+      "label": "平台适配",
+      "status": "pending"
+    },
+    {
+      "id": "quality",
+      "label": "质量检查",
+      "status": "pending"
+    },
+    {
+      "id": "preview",
+      "label": "预览",
+      "status": "pending"
+    },
+    {
+      "id": "publish",
+      "label": "发布",
+      "status": "pending"
+    }
+  ],
+  "content": {
+    "title": "你的西红柿炒鸡蛋可能第一步就错了",
+    "hook": "西红柿炒鸡蛋，你真的会做吗？别再分开炒了！",
+    "body": "（镜头快速切换：一盘炒得稀烂的西红柿鸡蛋 VS 一盘汤汁浓郁、鸡蛋蓬松的成品）\n旁白：很多人第一步就错！鸡蛋直接下锅？西红柿随便切？难怪汤汁不浓，鸡蛋不嫩。\n（特写镜头：单手打蛋入碗，加入一小勺水淀粉，快速搅匀）\n旁白：看好了，关键一招！鸡蛋里加一勺这个，炒出来又嫩又滑。\n（快切镜头：西红柿顶部划十字，开水烫，轻松去皮，切小块）\n旁白：西红柿一定要去皮切小块，这样才容易炒出浓稠的汤汁。\n（镜头：热锅凉油下鸡蛋，滑炒至凝固盛出；用底油炒西红柿至软烂出沙，倒入鸡蛋混合）\n旁白：记住顺序，先炒蛋，再炒西红柿，最后混合。只需一招，搞定这道国民下饭菜！酸甜开胃，拌饭绝了。",
+    "structure": "1. 开篇对比：失败案例 vs 成功案例，快速吸引注意力。\n2. 指出常见错误：分开炒、鸡蛋处理不当、西红柿处理不当。\n3. 展示核心技巧：鸡蛋加少量水淀粉搅匀（特写）。\n4. 展示关键步骤：西红柿去皮切小块（特写）。\n5. 演示正确流程：炒蛋 -> 盛出 -> 炒西红柿出汁 -> 混合。\n6. 成品展示：浓稠汤汁包裹着嫩滑鸡蛋的特写。",
+    "cta": "你平时是怎么做的？评论区告诉我！",
+    "hashtags": [
+      "西红柿炒鸡蛋",
+      "家常菜",
+      "做饭小技巧",
+      "下饭菜",
+      "美食教程"
+    ],
+    "coverSuggestion": "画面左右分屏，左边是炒得干瘪失败的西红柿鸡蛋，右边是汤汁浓郁、色泽诱人的成功成品，中间加粗大字标题“你的做法对吗？”",
+    "__videoProject": {
+      "materialStrategy": "more_ai",
+      "coverage": {
+        "targetDurationSec": 30,
+        "existingCoverageSec": 0,
+        "ownedVideoSec": 0,
+        "imageAnimationSec": 0,
+        "aiRequiredCoverageSec": 30,
+        "aiVideoNeededSec": 30,
+        "mode": "more_ai",
+        "summary": "30 秒：已有覆盖 0 秒（视频 0 + 图片动画 0）· AI 需补 30 秒"
+      },
+      "storyboard": {
+        "script": "AI 按参考链接线索改写分镜。围绕「你的西红柿炒鸡蛋可能第一步就错了」约 30 秒。分镜按口播结构拆开（开场→展开→收尾），每镜画面/旁白不同；可编辑后再导出。已有素材覆盖 0s，AI 缺口 30s。",
+        "shots": [
+          {
+            "id": "shot_1",
+            "order": 1,
+            "durationSec": 3,
+            "description": "画面快速切换：左边一盘炒得稀烂、汤汁分离的西红柿鸡蛋，右边一盘汤汁浓郁、鸡蛋蓬松的成品，形成鲜明对比。镜头聚焦在成功案例上。",
+            "sourceType": "ai_video",
+            "assetId": "856fe5fe-407c-4218-9974-fc43ee5a5061",
+            "subtitle": "你的西红柿炒鸡蛋可能第一步就错了",
+            "narration": "西红柿炒鸡蛋，你真的会做吗？别再分开炒了！",
+            "notes": "AI 视频画面已生成"
+          },
+          {
+            "id": "shot_2",
+            "order": 2,
+            "durationSec": 3,
+            "description": "特写镜头：一只手将鸡蛋打入碗中，另一只手用小勺舀起一勺水淀粉加入碗中。镜头拉近，展示鸡蛋液与水淀粉混合的细节。",
+            "sourceType": "ai_video",
+            "assetId": "897f1a46-fa6e-41e2-8579-bed2af9643f9",
+            "subtitle": "鸡蛋直接下锅？难怪不嫩！",
+            "narration": "很多人第一步就错！看好了，关键一招！鸡蛋里加一勺水淀粉，快速搅匀。",
+            "notes": "AI 视频画面已生成"
+          },
+          {
+            "id": "shot_3",
+            "order": 3,
+            "durationSec": 3,
+            "description": "快切镜头：西红柿顶部划十字，放入开水碗中烫几秒，然后轻松撕下完整的西红柿皮。接着将去皮的西红柿切成均匀的小块。",
+            "sourceType": "ai_video",
+            "assetId": "0514d1c0-93c4-4a51-a704-d0efcf3f4455",
+            "subtitle": "西红柿随便切？难怪汤汁不浓！",
+            "narration": "西红柿一定要去皮，再切成这样的小块，这样才容易炒出浓稠的汤汁。",
+            "notes": "AI 视频画面已生成"
+          },
+          {
+            "id": "shot_4",
+            "order": 4,
+            "durationSec": 3,
+            "description": "中景镜头：热锅凉油，倒入搅拌好的鸡蛋液。鸡蛋迅速膨胀、凝固，用锅铲滑炒成蓬松的大块，然后盛出到盘中备用。",
+            "sourceType": "ai_video",
+            "assetId": "4add05b0-bb94-49b2-beff-5026fbb35037",
+            "subtitle": "先炒蛋，盛出备用",
+            "narration": "记住顺序，热锅凉油下鸡蛋，滑炒到凝固就盛出来。这样鸡蛋才嫩。",
+            "notes": "AI 视频画面已生成"
+          },
+          {
+            "id": "shot_5",
+            "order": 5,
+            "durationSec": 3,
+            "description": "特写镜头：用锅里的底油，倒入西红柿小块，中火翻炒。西红柿逐渐变软，渗出大量红色浓稠的汤汁，形成“出沙”的状态。",
+            "sourceType": "ai_video",
+            "assetId": "0f0ef676-7f76-4dd8-9a97-09e7fa5a5e6d",
+            "subtitle": "再炒西红柿，炒出浓汁",
+            "narration": "用炒鸡蛋的底油炒西红柿，中小火慢慢炒，直到炒出这样浓稠的汤汁。",
+            "notes": "AI 视频画面已生成"
+          },
+          {
+            "id": "shot_6",
+            "order": 6,
+            "durationSec": 3,
+            "description": "成品特写：将炒好的鸡蛋倒回锅中与西红柿汤汁快速混合翻炒。最终成品汤汁红亮浓稠，完全包裹着金黄的鸡蛋块。镜头旁出现“评论区聊聊”的互动标签。",
+            "sourceType": "ai_video",
+            "assetId": "27c095a0-cac3-4780-856a-03bb6faca810",
+            "subtitle": "一招搞定，拌饭绝了！",
+            "narration": "最后混合，只需这一招！酸甜开胃，国民下饭菜搞定。你平时是怎么做的？评论区告诉我！",
+            "notes": "AI 视频画面已生成"
+          }
+        ],
+        "musicStrategy": "Music Track 必需。优先级：①用户上传 ②合法曲库 ③AI Music。禁止抓取版权音乐。",
+        "subtitleStyle": "底部安全区，简体中文",
+        "narrationNotes": "各镜头旁白来自文案拆分，可改；默认即可用于时间线，导出仍需素材或 AI 补镜。",
+        "updatedAt": "2026-09-06T05:50:42.845Z"
+      },
+      "timeline": {
+        "version": 1,
+        "aspectRatio": "9:16",
+        "durationSec": 18,
+        "videoTrack": {
+          "id": "video",
+          "scenes": [
+            {
+              "id": "shot_1",
+              "track": "video",
+              "start": 0,
+              "end": 3,
+              "assetId": "856fe5fe-407c-4218-9974-fc43ee5a5061",
+              "sourceType": "ai_video",
+              "text": "你的西红柿炒鸡蛋可能第一步就错了",
+              "prompt": "画面快速切换：左边一盘炒得稀烂、汤汁分离的西红柿鸡蛋，右边一盘汤汁浓郁、鸡蛋蓬松的成品，形成鲜明对比。镜头聚焦在成功案例上。",
+              "transition": "cut",
+              "cutOnBeat": false
+            },
+            {
+              "id": "shot_2",
+              "track": "video",
+              "start": 3,
+              "end": 6,
+              "assetId": "897f1a46-fa6e-41e2-8579-bed2af9643f9",
+              "sourceType": "ai_video",
+              "text": "鸡蛋直接下锅？难怪不嫩！",
+              "prompt": "特写镜头：一只手将鸡蛋打入碗中，另一只手用小勺舀起一勺水淀粉加入碗中。镜头拉近，展示鸡蛋液与水淀粉混合的细节。",
+              "transition": "cut",
+              "cutOnBeat": false
+            },
+            {
+              "id": "shot_3",
+              "track": "video",
+              "start": 6,
+              "end": 9,
+              "assetId": "0514d1c0-93c4-4a51-a704-d0efcf3f4455",
+              "sourceType": "ai_video",
+              "text": "西红柿随便切？难怪汤汁不浓！",
+              "prompt": "快切镜头：西红柿顶部划十字，放入开水碗中烫几秒，然后轻松撕下完整的西红柿皮。接着将去皮的西红柿切成均匀的小块。",
+              "transition": "cut",
+              "cutOnBeat": false
+            },
+            {
+              "id": "shot_4",
+              "track": "video",
+              "start": 9,
+              "end": 12,
+              "assetId": "4add05b0-bb94-49b2-beff-5026fbb35037",
+              "sourceType": "ai_video",
+              "text": "先炒蛋，盛出备用",
+              "prompt": "中景镜头：热锅凉油，倒入搅拌好的鸡蛋液。鸡蛋迅速膨胀、凝固，用锅铲滑炒成蓬松的大块，然后盛出到盘中备用。",
+              "transition": "cut",
+              "cutOnBeat": false
+            },
+            {
+              "id": "shot_5",
+              "track": "video",
+              "start": 12,
+              "end": 15,
+              "assetId": "0f0ef676-7f76-4dd8-9a97-09e7fa5a5e6d",
+              "sourceType": "ai_video",
+              "text": "再炒西红柿，炒出浓汁",
+              "prompt": "特写镜头：用锅里的底油，倒入西红柿小块，中火翻炒。西红柿逐渐变软，渗出大量红色浓稠的汤汁，形成“出沙”的状态。",
+              "transition": "cut",
+              "cutOnBeat": false
+            },
+            {
+              "id": "shot_6",
+              "track": "video",
+              "start": 15,
+              "end": 18,
+              "assetId": "27c095a0-cac3-4780-856a-03bb6faca810",
+              "sourceType": "ai_video",
+              "text": "一招搞定，拌饭绝了！",
+              "prompt": "成品特写：将炒好的鸡蛋倒回锅中与西红柿汤汁快速混合翻炒。最终成品汤汁红亮浓稠，完全包裹着金黄的鸡蛋块。镜头旁出现“评论区聊聊”的互动标签。",
+              "transition": "cut",
+              "cutOnBeat": false
+            }
+          ]
+        },
+        "imageTrack": {
+          "id": "image",
+          "scenes": []
+        },
+        "textTrack": {
+          "id": "text",
+          "scenes": [
+            {
+              "id": "shot_1_sub",
+              "track": "text",
+              "start": 0,
+              "end": 3,
+              "assetId": null,
+              "sourceType": "text",
+              "text": "你的西红柿炒鸡蛋可能第一步就错了",
+              "prompt": "画面快速切换：左边一盘炒得稀烂、汤汁分离的西红柿鸡蛋，右边一盘汤汁浓郁、鸡蛋蓬松的成品，形成鲜明对比。镜头聚焦在成功案例上。",
+              "transition": "cut",
+              "cutOnBeat": false
+            },
+            {
+              "id": "shot_2_sub",
+              "track": "text",
+              "start": 3,
+              "end": 6,
+              "assetId": null,
+              "sourceType": "text",
+              "text": "鸡蛋直接下锅？难怪不嫩！",
+              "prompt": "特写镜头：一只手将鸡蛋打入碗中，另一只手用小勺舀起一勺水淀粉加入碗中。镜头拉近，展示鸡蛋液与水淀粉混合的细节。",
+              "transition": "cut",
+              "cutOnBeat": false
+            },
+            {
+              "id": "shot_3_sub",
+              "track": "text",
+              "start": 6,
+              "end": 9,
+              "assetId": null,
+              "sourceType": "text",
+              "text": "西红柿随便切？难怪汤汁不浓！",
+              "prompt": "快切镜头：西红柿顶部划十字，放入开水碗中烫几秒，然后轻松撕下完整的西红柿皮。接着将去皮的西红柿切成均匀的小块。",
+              "transition": "cut",
+              "cutOnBeat": false
+            },
+            {
+              "id": "shot_4_sub",
+              "track": "text",
+              "start": 9,
+              "end": 12,
+              "assetId": null,
+              "sourceType": "text",
+              "text": "先炒蛋，盛出备用",
+              "prompt": "中景镜头：热锅凉油，倒入搅拌好的鸡蛋液。鸡蛋迅速膨胀、凝固，用锅铲滑炒成蓬松的大块，然后盛出到盘中备用。",
+              "transition": "cut",
+              "cutOnBeat": false
+            },
+            {
+              "id": "shot_5_sub",
+              "track": "text",
+              "start": 12,
+              "end": 15,
+              "assetId": null,
+              "sourceType": "text",
+              "text": "再炒西红柿，炒出浓汁",
+              "prompt": "特写镜头：用锅里的底油，倒入西红柿小块，中火翻炒。西红柿逐渐变软，渗出大量红色浓稠的汤汁，形成“出沙”的状态。",
+              "transition": "cut",
+              "cutOnBeat": false
+            },
+            {
+              "id": "shot_6_sub",
+              "track": "text",
+              "start": 15,
+              "end": 18,
+              "assetId": null,
+              "sourceType": "text",
+              "text": "一招搞定，拌饭绝了！",
+              "prompt": "成品特写：将炒好的鸡蛋倒回锅中与西红柿汤汁快速混合翻炒。最终成品汤汁红亮浓稠，完全包裹着金黄的鸡蛋块。镜头旁出现“评论区聊聊”的互动标签。",
+              "transition": "cut",
+              "cutOnBeat": false
+            }
+          ]
+        },
+        "musicTrack": {
+          "id": "music_main",
+          "sourceKind": "user_upload",
+          "assetId": null,
+          "url": null,
+          "license": null,
+          "bpm": null,
+          "beats": [],
+          "sections": [],
+          "scenes": []
+        },
+        "voiceTrack": {
+          "id": "voice",
+          "scenes": [
+            {
+              "id": "shot_1_voice",
+              "track": "voice",
+              "start": 0,
+              "end": 3,
+              "sourceType": "voice",
+              "text": "你的西红柿炒鸡蛋可能第一步就错了"
+            },
+            {
+              "id": "shot_2_voice",
+              "track": "voice",
+              "start": 3,
+              "end": 6,
+              "sourceType": "voice",
+              "text": "鸡蛋直接下锅？难怪不嫩！"
+            },
+            {
+              "id": "shot_3_voice",
+              "track": "voice",
+              "start": 6,
+              "end": 9,
+              "sourceType": "voice",
+              "text": "西红柿随便切？难怪汤汁不浓！"
+            },
+            {
+              "id": "shot_4_voice",
+              "track": "voice",
+              "start": 9,
+              "end": 12,
+              "sourceType": "voice",
+              "text": "先炒蛋，盛出备用"
+            },
+            {
+              "id": "shot_5_voice",
+              "track": "voice",
+              "start": 12,
+              "end": 15,
+              "sourceType": "voice",
+              "text": "再炒西红柿，炒出浓汁"
+            },
+            {
+              "id": "shot_6_voice",
+              "track": "voice",
+              "start": 15,
+              "end": 18,
+              "sourceType": "voice",
+              "text": "一招搞定，拌饭绝了！"
+            }
+          ]
+        },
+        "effectTrack": {
+          "id": "effect",
+          "scenes": []
+        },
+        "updatedAt": "2026-09-06T05:50:42.845Z"
+      },
+      "jobStatus": "completed",
+      "jobMessage": "成片已导出，可在下方预览播放。",
+      "previewUrl": "/api/video/render/file/cp_1788673504290_eujpk2n",
+      "exportUrl": "/api/video/render/file/cp_1788673504290_eujpk2n",
+      "playheadSec": 0,
+      "costEstimate": {
+        "available": true,
+        "estimatedCredits": 120,
+        "aiShots": 6,
+        "aiSeconds": 30,
+        "message": "预计消耗约 120 Credits（仅补 30 秒 / 6 个 AI 镜头；确认后才执行）",
+        "planFingerprint": "c01bfd71b300692c"
+      },
+      "lastGeneratedFingerprint": "dbb5efc1e47ebe8d"
+    }
+  },
+  "sources": [
+    {
+      "id": "src_1788673504290_q0xjbok",
+      "kind": "workspace_source",
+      "workspaceId": "ws_1788673467325_j8uwym3",
+      "title": "工作区资料"
+    },
+    {
+      "id": "src_1788673467328_v6jcf7y",
+      "kind": "workspace_source",
+      "title": "西红柿炒鸡蛋你真的会做吗？",
+      "url": "http://www.bilibili.com/video/av1651436418",
+      "snippet": "【媒体识别 · 二创参考】web\n参考链接（仅作结构/风格参考，不复制原作）：http://www.bilibili.com/video/av1651436418\n参考标题（需改写，不得原样使用）：西红柿炒鸡蛋你真的会做吗？\n结构线索：\n- 开篇以“你真的会吗”制造认知冲突，挑战观众的固有做法，形成钩子\n- 引入“一招”作为核心差异点，与常见多步骤做法形成对比，暗示独特方案\n- “国民级下饭菜”定位，以家庭餐桌高频场景引发共鸣和代入感\n- “酸甜开胃”作为味觉记忆点，暗示风味对比轴（浓郁vs清爽、简单vs繁琐）\n- 指向新手与经验者之间的认知反差，形成做法与效果的反差对比\n- 收尾强调“一招搞定”的轻松感，与开头的质疑形成首尾呼应闭环\n- 信息不足：标题未提供南北地域或具体做法差异维度，无法列出方向性对比轴\n参考文案线索（需原创改写）：\n西红柿炒鸡蛋你真的会做吗？一招搞定国民级下饭菜，酸甜",
+      "workspaceId": "ws_1788673467325_j8uwym3"
+    }
+  ],
+  "promptOverride": null,
+  "createdAt": "2026-09-06T05:45:04.289Z",
+  "updatedAt": "2026-09-06T17:30:35.925Z",
+  "assets": [
+    {
+      "id": "ca_1788673842830_0",
+      "projectId": "cp_1788673504290_eujpk2n",
+      "assetId": "856fe5fe-407c-4218-9974-fc43ee5a5061",
+      "role": "media",
+      "sortOrder": 0,
+      "usage": null,
+      "selected": true,
+      "createdAt": "2026-09-06T05:50:42.830Z"
+    },
+    {
+      "id": "ca_1788673842830_1",
+      "projectId": "cp_1788673504290_eujpk2n",
+      "assetId": "897f1a46-fa6e-41e2-8579-bed2af9643f9",
+      "role": "media",
+      "sortOrder": 1,
+      "usage": null,
+      "selected": true,
+      "createdAt": "2026-09-06T05:50:42.830Z"
+    },
+    {
+      "id": "ca_1788673842830_2",
+      "projectId": "cp_1788673504290_eujpk2n",
+      "assetId": "0514d1c0-93c4-4a51-a704-d0efcf3f4455",
+      "role": "media",
+      "sortOrder": 2,
+      "usage": null,
+      "selected": true,
+      "createdAt": "2026-09-06T05:50:42.830Z"
+    },
+    {
+      "id": "ca_1788673842830_3",
+      "projectId": "cp_1788673504290_eujpk2n",
+      "assetId": "4add05b0-bb94-49b2-beff-5026fbb35037",
+      "role": "media",
+      "sortOrder": 3,
+      "usage": null,
+      "selected": true,
+      "createdAt": "2026-09-06T05:50:42.830Z"
+    },
+    {
+      "id": "ca_1788673842830_4",
+      "projectId": "cp_1788673504290_eujpk2n",
+      "assetId": "0f0ef676-7f76-4dd8-9a97-09e7fa5a5e6d",
+      "role": "media",
+      "sortOrder": 4,
+      "usage": null,
+      "selected": true,
+      "createdAt": "2026-09-06T05:50:42.830Z"
+    },
+    {
+      "id": "ca_1788673842830_5",
+      "projectId": "cp_1788673504290_eujpk2n",
+      "assetId": "27c095a0-cac3-4780-856a-03bb6faca810",
+      "role": "media",
+      "sortOrder": 5,
+      "usage": null,
+      "selected": true,
+      "createdAt": "2026-09-06T05:50:42.830Z"
+    }
+  ]
+}

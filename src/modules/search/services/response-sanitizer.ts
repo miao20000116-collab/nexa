@@ -11,21 +11,24 @@ export function sanitizeSearchResponse(
     normalizedQuery: response.normalizedQuery,
     intent: response.intent,
     status: response.status,
+    failureKind: response.failureKind,
     results: response.results.map((result) => {
       const {
         rawSource: _rawSource,
         retrievalMethod: _retrievalMethod,
-        rankScore: _rankScore,
+        // keep rankScore for overview ordering on client
+        rankScore,
         ...rest
       } = result;
       void _rawSource;
       void _retrievalMethod;
-      void _rankScore;
-      return rest;
+      return { ...rest, rankScore };
     }),
     overview: response.overview,
     overviewStatus: response.overviewStatus,
     channels: response.channels,
+    page: response.page,
+    hasMore: response.hasMore,
   };
 
   if (isDebug && response.debug) {

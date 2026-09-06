@@ -16,11 +16,11 @@ export function routeSources(intent: SearchIntent): SourceRoute {
       return {
         web: true,
         wikipedia: true,
-        youtube: false,
+        youtube: true,
         social: false,
         image: true,
         news: false,
-        video: false,
+        video: true,
       };
     case "news":
       return {
@@ -28,19 +28,19 @@ export function routeSources(intent: SearchIntent): SourceRoute {
         wikipedia: false,
         youtube: false,
         social: false,
-        image: true,
+        image: false,
         news: true,
-        video: true,
+        video: false,
       };
     case "social":
       return {
-        web: false,
+        web: true,
         wikipedia: false,
         youtube: false,
         social: true,
-        image: true,
+        image: false,
         news: false,
-        video: true,
+        video: false,
       };
     case "opinion":
       return {
@@ -48,15 +48,15 @@ export function routeSources(intent: SearchIntent): SourceRoute {
         wikipedia: false,
         youtube: false,
         social: true,
-        image: true,
+        image: false,
         news: false,
-        video: true,
+        video: false,
       };
     case "product":
       return {
         web: true,
         wikipedia: false,
-        youtube: false,
+        youtube: true,
         social: false,
         image: true,
         news: false,
@@ -68,13 +68,13 @@ export function routeSources(intent: SearchIntent): SourceRoute {
         wikipedia: true,
         youtube: false,
         social: false,
-        image: true,
+        image: false,
         news: true,
-        video: true,
+        video: false,
       };
     case "video":
       return {
-        web: false,
+        web: true,
         wikipedia: false,
         youtube: true,
         social: false,
@@ -84,7 +84,7 @@ export function routeSources(intent: SearchIntent): SourceRoute {
       };
     case "image":
       return {
-        web: false,
+        web: true,
         wikipedia: false,
         youtube: false,
         social: false,
@@ -94,10 +94,11 @@ export function routeSources(intent: SearchIntent): SourceRoute {
       };
     case "general":
     default:
+      // Ordinary-engine style: web + images + videos in one shot
       return {
         web: true,
-        wikipedia: false,
-        youtube: false,
+        wikipedia: true,
+        youtube: true,
         social: false,
         image: true,
         news: false,
@@ -114,9 +115,8 @@ export function detectPreferredSocialPlatforms(query: string): SearchPlatform[] 
   if (/reddit/.test(q)) preferred.push("reddit");
   if (/小红书|xiaohongshu|xhs/.test(q)) preferred.push("xiaohongshu");
   if (/tiktok|tiktok\.com|抖音/.test(q)) preferred.push("tiktok");
-  return preferred.length > 0
-    ? preferred
-    : ["x", "reddit", "xiaohongshu", "tiktok"];
+  // Empty = no social bias. Never default to all platforms (that floods every query).
+  return preferred;
 }
 
 export function expandSocialQuery(query: string): string {

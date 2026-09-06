@@ -124,7 +124,7 @@ services:
       - .env.production
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-nexa}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-nexa}?schema=public
-    command: ["bash", "-lc", "npm ci && npx prisma migrate deploy"]
+    command: ["bash", "-lc", "npm ci && npx prisma migrate deploy && npx tsx scripts/seed-showcase.ts"]
     depends_on:
       postgres:
         condition: service_healthy

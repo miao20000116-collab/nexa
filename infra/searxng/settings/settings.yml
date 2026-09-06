@@ -1,22 +1,43 @@
-# Nexa local SearXNG settings
-# Based on official SearXNG defaults with JSON API enabled for Nexa integration.
-
 use_default_settings: true
 
 server:
   port: 8080
   bind_address: "0.0.0.0"
-  secret_key: "nexa-dev-local-secret-change-in-production"
+  secret_key: "nexa-searxng-tencent"
   limiter: false
 
 search:
   safe_search: 0
   autocomplete: ""
-  default_lang: "auto"
+  default_lang: "zh-CN"
+  ban_time_on_fail: 1
+  max_ban_time_on_fail: 30
   formats:
     - html
     - json
 
 outgoing:
-  request_timeout: 10.0
-  max_request_timeout: 15.0
+  request_timeout: 15.0
+  max_request_timeout: 25.0
+
+engines:
+  - name: bing
+    disabled: false
+  - name: bing images
+    disabled: false
+  - name: bing news
+    disabled: false
+  - name: bing videos
+    disabled: false
+  - name: baidu
+    disabled: false
+  - name: wikipedia
+    disabled: false
+  - name: duckduckgo
+    disabled: true
+  - name: brave
+    disabled: true
+  - name: google
+    disabled: true
+  - name: startpage
+    disabled: true

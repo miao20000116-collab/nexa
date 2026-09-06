@@ -85,11 +85,9 @@ function filterByTab(results: SearchResult[], tab: SearchTab): SearchResult[] {
   }
 }
 
-function getAvailableTabs(results: SearchResult[]): SearchTab[] {
-  return TABS.filter((tab) => {
-    if (tab.id === "all") return true;
-    return filterByTab(results, tab.id).length > 0;
-  }).map((t) => t.id);
+function getAvailableTabs(_results: SearchResult[]): SearchTab[] {
+  // Always expose ordinary-engine tabs (web/video/image/social), not only when filled
+  return TABS.map((t) => t.id);
 }
 
 function EmptyResultsState({
@@ -195,6 +193,8 @@ export function SearchResults({
   const [response, setResponse] = useState<SearchResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [overviewBusy, setOverviewBusy] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [page, setPage] = useState(1);
   const overviewAutoKey = useRef<string | null>(null);
 
   const {
@@ -245,6 +245,7 @@ export function SearchResults({
     setError(null);
     setResponse(null);
     setOverviewBusy(false);
+    setPage(1);
     overviewAutoKey.current = null;
     setStage("understanding");
 
@@ -257,7 +258,7 @@ export function SearchResults({
       const res = await fetch("/api/search", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: q }),
+        body: JSON.stringify({ query: q, page: 1 }),
       });
 
       stageTimers.forEach(clearTimeout);
@@ -275,6 +276,7 @@ export function SearchResults({
       }
 
       setResponse(data);
+      setPage(data.page ?? 1);
       setStage("complete");
       // Kick off AI overview immediately (do not wait for results paint cycle).
       if (
@@ -294,6 +296,37 @@ export function SearchResults({
       setStage("error");
     }
   }, []);
+
+  const loadMore = useCallback(async () => {
+    if (!query.trim() || !response || loadingMore || response.hasMore === false) {
+      return;
+    }
+    const nextPage = page + 1;
+    setLoadingMore(true);
+    try {
+      const res = await fetch("/api/search", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query, page: nextPage }),
+      });
+      if (!res.ok) throw new Error("load more failed");
+      const data: SearchResponse = await res.json();
+      const seen = new Set(response.results.map((r) => r.url));
+      const appended = data.results.filter((r) => r.url && !seen.has(r.url));
+      setResponse({
+        ...response,
+        results: [...response.results, ...appended],
+        page: nextPage,
+        hasMore: data.hasMore !== false && appended.length > 0,
+        channels: { ...response.channels, ...data.channels },
+      });
+      setPage(nextPage);
+    } catch {
+      setResponse((prev) => (prev ? { ...prev, hasMore: false } : prev));
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [query, response, loadingMore, page]);
 
   const requestOverview = useCallback(async () => {
     if (!response || !query.trim() || response.results.length === 0) return;
@@ -698,12 +731,31 @@ export function SearchResults({
           {filteredResults.length === 0 && (
             <EmptyResultsState
               activeTab={activeTab}
-              channelStatus={response.channels?.social}
+              channelStatus={
+                activeTab === "video"
+                  ? response.channels?.videos ?? response.channels?.youtube
+                  : activeTab === "image"
+                    ? response.channels?.images
+                    : response.channels?.social
+              }
               hasWebResults={results.some((r) => r.platform === "web")}
               hasVideoResults={results.some(
                 (r) => r.platform === "youtube" || r.sourceType === "video"
               )}
             />
+          )}
+
+          {filteredResults.length > 0 && response.hasMore !== false && (
+            <div className="flex justify-center py-8">
+              <button
+                type="button"
+                onClick={() => void loadMore()}
+                disabled={loadingMore}
+                className="rounded-full border border-zinc-200 bg-white px-6 py-2.5 text-[14px] text-zinc-700 shadow-sm transition hover:border-zinc-300 hover:bg-zinc-50 disabled:cursor-wait disabled:opacity-60"
+              >
+                {loadingMore ? "加载中…" : "加载更多"}
+              </button>
+            </div>
           )}
         </>
       )}

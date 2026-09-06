@@ -722,11 +722,11 @@ export function CreationWorkbench({ projectId }: { projectId: string }) {
             fallbackLabel="返回创作列表"
           />
           <input
-            value={project.title}
+            value={project.title ?? ""}
             onChange={(e) =>
               setProject({ ...project, title: e.target.value })
             }
-            onBlur={() => void savePatch({ title: project.title })}
+            onBlur={() => void savePatch({ title: project.title ?? "" })}
             className="mt-3 w-full bg-transparent text-[26px] font-semibold tracking-tight text-zinc-900 outline-none sm:text-[28px]"
           />
           <p className="mt-1 text-[14px] text-zinc-500">

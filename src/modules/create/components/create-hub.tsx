@@ -134,7 +134,6 @@ export function CreateHubPage() {
     return m?.[1]?.trim() || "";
   })();
   const knownCommerceProduct = productFromUrl || productFromCommerce;
-  const presetAutoProduce = searchParams.get("autoProduce") === "1";
   const [mode, setMode] = useState<CreationStartMode>(() => {
     if (presetAssetIds) return "assets";
     if (commerceContext || presetMode === "commerce") return "commerce";
@@ -247,42 +246,6 @@ export function CreateHubPage() {
       )
       .catch(() => undefined);
   }, []);
-
-  const autoProduceStarted = useRef(false);
-  useEffect(() => {
-    if (!presetAutoProduce || autoProduceStarted.current) return;
-    if (!goalPreset.trim() || !presetWorkspaceId) return;
-    autoProduceStarted.current = true;
-    setSubmitting(true);
-    setError(null);
-    void (async () => {
-      try {
-        const res = await fetch("/api/create/produce", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            goal: goalPreset.trim(),
-            workspaceId: presetWorkspaceId,
-            confirm: true,
-            contentType: "short_video",
-            platform: "douyin",
-          }),
-        });
-        const data = await res.json();
-        if (data.projectId || data.href) {
-          router.replace(
-            data.href || `/create/${data.projectId}?panel=video`
-          );
-          return;
-        }
-        setError(data.message || data.error || "一键成片未能启动");
-      } catch {
-        setError("一键成片失败，请稍后重试");
-      } finally {
-        setSubmitting(false);
-      }
-    })();
-  }, [presetAutoProduce, goalPreset, presetWorkspaceId, router]);
 
   const renameProject = async (p: ProjectSummary) => {
     const next = window.prompt("重命名创作项目", p.title || "");

@@ -1,7 +1,10 @@
 import type { SearchIntent, SearchResult } from "../types";
+import { analyzeRelevance } from "./relevance-validator";
 
 interface RankFeatures {
   relevance: number;
+  phrase: number;
+  coverage: number;
   freshness: number;
   authority: number;
   intentMatch: number;
@@ -36,22 +39,8 @@ const INTENT_PLATFORM_WEIGHTS: Record<
   social: { x: 1.45, reddit: 1.35, xiaohongshu: 1.25, tiktok: 1.2, web: 0.7 },
   video: { youtube: 1.55, web: 0.85 },
   image: { web: 1.2 },
-  general: { wikipedia: 1.15, web: 1.0, youtube: 0.9 },
+  general: { wikipedia: 1.25, web: 1.15, youtube: 0.45, bilibili: 0.4, tiktok: 0.4 },
 };
-
-function computeRelevance(result: SearchResult, query: string): number {
-  const terms = query
-    .toLowerCase()
-    .split(/[\s/]+/)
-    .filter((t) => t.length > 1);
-  const text = `${result.title ?? ""} ${result.snippet ?? ""} ${result.content ?? ""}`.toLowerCase();
-  if (terms.length === 0) return 0.5;
-  let matches = 0;
-  for (const term of terms) {
-    if (text.includes(term)) matches++;
-  }
-  return Math.min(matches / terms.length, 1);
-}
 
 function computeFreshness(result: SearchResult, intent?: SearchIntent): number {
   if (!result.publishedAt) {
@@ -147,17 +136,28 @@ function computeIntentMatch(
 
 function computeSourceMatch(result: SearchResult, intent: SearchIntent): number {
   const intentSourceMap: Record<SearchIntent, string[]> = {
-    knowledge: ["encyclopedia", "official", "academic", "web"],
+    knowledge: ["encyclopedia", "official", "academic", "web", "news"],
     news: ["news", "official", "web"],
-    opinion: ["social", "forum", "video", "web"],
-    product: ["commerce", "web", "video", "social"],
+    opinion: ["social", "forum", "web", "news"],
+    product: ["commerce", "web", "official", "news"],
     research: ["academic", "encyclopedia", "news", "official", "web"],
     social: ["social", "forum"],
     video: ["video"],
     image: ["image", "web"],
-    general: ["web", "encyclopedia", "official", "news"],
+    general: ["web", "encyclopedia", "official", "news", "academic"],
   };
-  return intentSourceMap[intent].includes(result.sourceType) ? 1 : 0.45;
+  const preferred = intentSourceMap[intent].includes(result.sourceType) ? 1 : 0.45;
+  // Extra demotion: video pages in non-video intents
+  if (
+    intent !== "video" &&
+    (result.sourceType === "video" ||
+      result.platform === "bilibili" ||
+      result.platform === "youtube" ||
+      result.platform === "tiktok")
+  ) {
+    return Math.min(preferred, 0.28);
+  }
+  return preferred;
 }
 
 function computeContentQuality(result: SearchResult): number {
@@ -174,8 +174,11 @@ function computeFeatures(
   query: string,
   intent: SearchIntent
 ) {
+  const breakdown = analyzeRelevance(result, query);
   return {
-    relevance: computeRelevance(result, query),
+    relevance: breakdown.score,
+    phrase: Math.max(breakdown.exactPhraseMatch, breakdown.normalizedPhraseMatch),
+    coverage: breakdown.componentCoverage,
     freshness: computeFreshness(result, intent),
     authority: computeAuthority(result, intent),
     intentMatch: computeIntentMatch(result, intent),
@@ -188,76 +191,92 @@ function intentWeights(intent: SearchIntent) {
   switch (intent) {
     case "news":
       return {
-        relevance: 0.22,
-        freshness: 0.35,
-        authority: 0.18,
-        intentMatch: 0.12,
-        sourceMatch: 0.1,
-        contentQuality: 0.03,
+        relevance: 0.18,
+        phrase: 0.12,
+        coverage: 0.08,
+        freshness: 0.3,
+        authority: 0.14,
+        intentMatch: 0.1,
+        sourceMatch: 0.06,
+        contentQuality: 0.02,
       };
     case "knowledge":
       return {
-        relevance: 0.34,
+        relevance: 0.22,
+        phrase: 0.2,
+        coverage: 0.12,
         freshness: 0.04,
-        authority: 0.24,
-        intentMatch: 0.18,
-        sourceMatch: 0.12,
-        contentQuality: 0.08,
+        authority: 0.18,
+        intentMatch: 0.12,
+        sourceMatch: 0.08,
+        contentQuality: 0.04,
       };
     case "social":
     case "opinion":
       return {
-        relevance: 0.26,
-        freshness: 0.2,
-        authority: 0.08,
-        intentMatch: 0.26,
-        sourceMatch: 0.14,
+        relevance: 0.2,
+        phrase: 0.12,
+        coverage: 0.08,
+        freshness: 0.16,
+        authority: 0.06,
+        intentMatch: 0.2,
+        sourceMatch: 0.12,
         contentQuality: 0.06,
       };
     case "video":
       return {
-        relevance: 0.3,
-        freshness: 0.15,
-        authority: 0.1,
-        intentMatch: 0.25,
+        relevance: 0.22,
+        phrase: 0.12,
+        coverage: 0.08,
+        freshness: 0.12,
+        authority: 0.08,
+        intentMatch: 0.2,
         sourceMatch: 0.1,
-        contentQuality: 0.1,
+        contentQuality: 0.08,
       };
     case "image":
       return {
-        relevance: 0.35,
-        freshness: 0.1,
-        authority: 0.1,
-        intentMatch: 0.2,
-        sourceMatch: 0.15,
+        relevance: 0.24,
+        phrase: 0.14,
+        coverage: 0.08,
+        freshness: 0.08,
+        authority: 0.08,
+        intentMatch: 0.16,
+        sourceMatch: 0.12,
         contentQuality: 0.1,
       };
     case "product":
       return {
-        relevance: 0.3,
-        freshness: 0.15,
-        authority: 0.12,
-        intentMatch: 0.18,
-        sourceMatch: 0.15,
-        contentQuality: 0.1,
+        relevance: 0.22,
+        phrase: 0.14,
+        coverage: 0.1,
+        freshness: 0.12,
+        authority: 0.1,
+        intentMatch: 0.14,
+        sourceMatch: 0.1,
+        contentQuality: 0.08,
       };
     case "research":
       return {
-        relevance: 0.28,
-        freshness: 0.12,
-        authority: 0.22,
-        intentMatch: 0.15,
-        sourceMatch: 0.15,
-        contentQuality: 0.08,
+        relevance: 0.2,
+        phrase: 0.16,
+        coverage: 0.12,
+        freshness: 0.08,
+        authority: 0.18,
+        intentMatch: 0.12,
+        sourceMatch: 0.08,
+        contentQuality: 0.06,
       };
     default:
       return {
-        relevance: 0.3,
-        freshness: 0.15,
-        authority: 0.15,
-        intentMatch: 0.15,
-        sourceMatch: 0.1,
-        contentQuality: 0.15,
+        relevance: 0.22,
+        phrase: 0.18,
+        coverage: 0.12,
+        freshness: 0.1,
+        authority: 0.12,
+        intentMatch: 0.1,
+        sourceMatch: 0.08,
+        contentQuality: 0.08,
       };
   }
 }
@@ -271,13 +290,28 @@ export function rankResults(
 
   const scored = results.map((result) => {
     const features = computeFeatures(result, query, intent);
-    const finalScore =
+    let finalScore =
       features.relevance * weights.relevance +
+      features.phrase * weights.phrase +
+      features.coverage * weights.coverage +
       features.freshness * weights.freshness +
       features.authority * weights.authority +
       features.intentMatch * weights.intentMatch +
       features.sourceMatch * weights.sourceMatch +
       features.contentQuality * weights.contentQuality;
+
+    const breakdown = analyzeRelevance(result, query);
+    // Generic: full concept beats partial; never let weak-only float up
+    if (breakdown.fullConceptHit) finalScore *= 1.2;
+    // Soft demote only — never zero out / remove in ranker
+    if (breakdown.weakOnlyMatch || breakdown.partialOnly) finalScore *= 0.55;
+    // Non-video intents: demote video-heavy hosts (already in sourceMatch; reinforce)
+    if (
+      intent !== "video" &&
+      /bilibili\.com|douyin\.com|tiktok\.com|youtube\.com/i.test(result.url)
+    ) {
+      finalScore *= 0.55;
+    }
 
     return { ...result, rankScore: finalScore };
   });

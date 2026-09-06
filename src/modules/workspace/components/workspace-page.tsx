@@ -266,7 +266,7 @@ function WorkspaceListContent() {
                         继续搜索
                       </Link>
                       <Link
-                        href={`/create?mode=workspace&workspaceId=${encodeURIComponent(ws.id)}&goal=${encodeURIComponent(ws.name || "基于工作区生成短视频成片")}&autoProduce=1`}
+                        href={`/create?mode=workspace&workspaceId=${encodeURIComponent(ws.id)}&goal=${encodeURIComponent(ws.name || "基于工作区生成短视频成片")}`}
                         className="text-zinc-500 hover:text-zinc-800"
                       >
                         一键成片
@@ -532,7 +532,7 @@ export function WorkspaceDetailPage({ workspaceId }: { workspaceId: string }) {
       workspace.name?.trim() ||
       "基于工作区资料生成短视频成片";
     router.push(
-      `/create?mode=workspace&workspaceId=${encodeURIComponent(workspaceId)}&goal=${encodeURIComponent(goal)}&autoProduce=1`
+      `/create?mode=workspace&workspaceId=${encodeURIComponent(workspaceId)}&goal=${encodeURIComponent(goal)}`
     );
   };
 

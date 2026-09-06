@@ -1,0 +1,144 @@
+{
+  "id": "cp_1788676054120_1pbolrt",
+  "userId": null,
+  "title": "西红柿炒鸡蛋，90%的人第一步就错！大厨教你正确做法",
+  "goal": "基于工作区资料生成短视频成片：西红柿炒鸡蛋正确做法",
+  "contentType": "short_video",
+  "platform": "douyin",
+  "status": "ready",
+  "brief": "纠正先炒蛋/先炒西红柿误区，强调开水焯西红柿去皮与蛋液调味。",
+  "workspaceId": "ws_1788675908892_llshfll",
+  "startMode": "workspace",
+  "timeline": [
+    {
+      "id": "goal",
+      "label": "目标",
+      "status": "done"
+    },
+    {
+      "id": "context",
+      "label": "上下文",
+      "status": "done"
+    },
+    {
+      "id": "plan",
+      "label": "内容计划",
+      "status": "pending"
+    },
+    {
+      "id": "draft",
+      "label": "草稿",
+      "status": "pending"
+    },
+    {
+      "id": "adapt",
+      "label": "平台适配",
+      "status": "pending"
+    },
+    {
+      "id": "quality",
+      "label": "质量检查",
+      "status": "pending"
+    },
+    {
+      "id": "preview",
+      "label": "预览",
+      "status": "pending"
+    },
+    {
+      "id": "publish",
+      "label": "发布",
+      "status": "pending"
+    }
+  ],
+  "content": {
+    "title": "西红柿炒鸡蛋，90%的人第一步就错！大厨教你正确做法",
+    "hook": "你做的西红柿炒鸡蛋是不是要么汤汁太多，要么鸡蛋太老？先炒蛋还是先炒西红柿？其实第一步就错了！",
+    "body": "（镜头快速切换：一盘失败的西红柿炒鸡蛋，汤汁稀、鸡蛋老；另一盘完美的西红柿炒鸡蛋，色泽诱人）\n\n旁白/口播：别再争论先炒蛋还是先炒西红柿了，大厨说这两种顺序都不对！\n\n（镜头特写：西红柿放入沸水中）\n关键的第一步，是把西红柿放进开水里煮一分钟。这一步能轻松去皮，让西红柿更容易出沙，炒出来的汤汁才浓郁。\n\n（镜头：切块备用）\n接着打鸡蛋。重点来了，蛋液里加一点料酒和白胡椒粉，能去腥增香，这是很多人不知道的细节。\n\n（镜头：热锅冷油，滑炒鸡蛋）\n现在开始炒。先炒鸡蛋，炒到嫩滑定型就盛出来备用。\n\n（镜头：炒西红柿，加盐和少量清水）\n然后炒西红柿，记得加盐和一点点清水，这样才能把西红柿的汤汁充分煮出来。\n\n（镜头：倒入鸡蛋，混合翻炒收汁）\n最后把鸡蛋倒回去，快速翻炒几下，让鸡蛋裹满浓郁的西红柿汁，就可以出锅了。\n\n这样做出来的西红柿炒鸡蛋，鸡蛋鲜嫩，汤汁浓郁，开胃又下饭。",
+    "structure": "开场对比失败/成功 → 指出顺序误区 → 焯水去皮 → 蛋液调味 → 先蛋后茄混合收汁 → 成品 CTA",
+    "cta": "收藏起来按这个顺序试一次，评论区告诉我味道怎么样！",
+    "hashtags": [
+      "西红柿炒鸡蛋",
+      "家常菜",
+      "下饭菜",
+      "做饭技巧",
+      "美食教程"
+    ],
+    "coverSuggestion": "左右对比：失败糊锅 vs 浓汁成品，大字「90%的人第一步就错」",
+    "__videoProject": {
+      "materialStrategy": "more_ai",
+      "coverage": {
+        "targetDurationSec": 30,
+        "existingCoverageSec": 0,
+        "ownedVideoSec": 0,
+        "imageAnimationSec": 0,
+        "aiRequiredCoverageSec": 30,
+        "aiVideoNeededSec": 30,
+        "mode": "more_ai",
+        "summary": "30 秒短视频成片（展示样本）"
+      },
+      "storyboard": {
+        "script": "围绕「西红柿炒鸡蛋正确第一步」约 30 秒分镜。",
+        "shots": [
+          {
+            "id": "shot_1",
+            "order": 1,
+            "durationSec": 5,
+            "description": "失败成品与成功成品对比特写",
+            "sourceType": "ai_video",
+            "subtitle": "90%的人第一步就错了",
+            "narration": "别再争论先炒蛋还是先炒西红柿，大厨说这两种都不对！"
+          },
+          {
+            "id": "shot_2",
+            "order": 2,
+            "durationSec": 5,
+            "description": "西红柿开水焯一分钟去皮",
+            "sourceType": "ai_video",
+            "subtitle": "先焯水去皮",
+            "narration": "关键第一步：西红柿开水煮一分钟，轻松去皮才容易出沙。"
+          },
+          {
+            "id": "shot_3",
+            "order": 3,
+            "durationSec": 5,
+            "description": "蛋液加料酒白胡椒",
+            "sourceType": "ai_video",
+            "subtitle": "蛋液去腥增香",
+            "narration": "蛋液里加一点料酒和白胡椒粉，炒出来更香。"
+          },
+          {
+            "id": "shot_4",
+            "order": 4,
+            "durationSec": 5,
+            "description": "先滑炒鸡蛋盛出，再炒西红柿出汁，最后混合",
+            "sourceType": "ai_video",
+            "subtitle": "混合收汁出锅",
+            "narration": "先炒蛋盛出，再炒西红柿出汁，最后混合翻炒，开胃下饭。"
+          }
+        ],
+        "musicStrategy": "Music Track 可选",
+        "subtitleStyle": "底部安全区，简体中文",
+        "narrationNotes": "口播可按分镜微调",
+        "updatedAt": "2026-09-06T06:33:07.149Z"
+      },
+      "jobStatus": "failed",
+      "jobMessage": "即梦曾拒绝访问；文案与分镜已保留，可重新补镜头后导出。",
+      "previewUrl": null,
+      "exportUrl": null,
+      "playheadSec": 0
+    }
+  },
+  "sources": [
+    {
+      "id": "src_ref_1",
+      "kind": "workspace_source",
+      "workspaceId": "ws_1788675908892_llshfll",
+      "title": "工作区资料"
+    }
+  ],
+  "promptOverride": null,
+  "createdAt": "2026-09-06T06:27:34.120Z",
+  "updatedAt": "2026-09-06T17:30:35.925Z",
+  "assets": []
+}

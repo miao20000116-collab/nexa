@@ -317,18 +317,35 @@ export async function getProject(id: string): Promise<CreationProject | null> {
 export async function listProjects(): Promise<CreationProject[]> {
   const session = await getSession();
   const userId = session.user?.id ?? null;
+  const { ensureShowcaseSeeded } = await import(
+    "@/lib/showcase/ensure-seeded"
+  );
+  const { SHARED_CREATION_IDS } = await import(
+    "@/lib/showcase/shared-catalog"
+  );
+  await ensureShowcaseSeeded();
+
   const dbAvailable = await isDatabaseAvailable();
   if (!dbAvailable) return fileStoreListProjects(userId);
 
   try {
     const list = await prisma.creationProject.findMany({
-      where: userId ? { userId } : { userId: null },
+      where: {
+        OR: [
+          userId ? { userId } : { userId: null },
+          { id: { in: [...SHARED_CREATION_IDS] } },
+        ],
+      },
       include: {
         assets: { include: { asset: true }, orderBy: { sortOrder: "asc" } },
       },
       orderBy: { updatedAt: "desc" },
     });
-    return list.map(mapDbProject);
+    // Dedupe if a row matched both own + shared clauses
+    const seen = new Set<string>();
+    return list
+      .map(mapDbProject)
+      .filter((p) => (seen.has(p.id) ? false : (seen.add(p.id), true)));
   } catch {
     return fileStoreListProjects(userId);
   }

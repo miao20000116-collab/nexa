@@ -15,10 +15,12 @@ export async function POST(request: NextRequest) {
     }
 
     const orchestrator = getSearchOrchestrator();
+    const page = Math.max(1, Number(body.page) || 1);
     // Results first — AI overview is loaded separately via /api/search/overview
     // so the page is not blocked on the LLM round-trip.
     const response = await orchestrator.search(query, {
       includeOverview: false,
+      page,
     });
 
     const dbAvailable = await isDatabaseAvailable();
