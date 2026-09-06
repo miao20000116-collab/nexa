@@ -77,8 +77,20 @@ curl -sS "https://<你的站点>.netlify.app/api/health?deep=1"
 - `ok: true` 且 `database: ok` → 基础成功  
 - `database: error` → 检查 `DATABASE_URL` / 白名单 / migrate，**修环境变量后 Clear cache and deploy**（这会再耗一次构建，故务必第一次就配好）
 
-## F. 明确不做的事
+## F. Netlify 前端 ↔ 腾讯云 API（当前架构）
+
+`netlify.toml` 已把 `/api/*` **同源代理**到腾讯云（`http://134.175.147.230`）：
+
+- 浏览器只访问 `https://*.netlify.app`（无混合内容）  
+- 页面/静态资源在 Netlify；搜索/创作/视频等 API 在腾讯云  
+- 腾讯云 `.env.production` 建议设置：  
+  `CORS_ALLOWED_ORIGINS=https://nexa-workflow-preview.netlify.app`  
+  （直连 API 时用；走代理时可不依赖 CORS）
+
+改腾讯云 IP/域名后，同步改 `netlify.toml` 里 `[[redirects]]` 的 `to`，再 Deploy 一次。
+
+## G. 明确不做的事
 
 - 不要把 Netlify 当作中国大陆唯一生产入口  
-- 不要在未配数据库时部署（数据会丢 / 功能异常）  
 - 不要期望长视频 Worker 在 Netlify 上稳定跑完 — 放到腾讯云 `worker` 服务  
+- 不要让浏览器从 HTTPS Netlify **直连** HTTP 腾讯云 IP（会被混合内容拦截；用上面的代理）  

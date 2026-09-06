@@ -32,3 +32,12 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# Frontend-only preview: browser stays on Netlify HTTPS; /api is proxied to 腾讯云.
+# force=true so OpenNext API functions do not shadow these rewrites.
+# Mixed-content safe (no browser HTTPS→HTTP calls).
+[[redirects]]
+  from = "/api/*"
+  to = "http://134.175.147.230/api/:splat"
+  status = 200
+  force = true
