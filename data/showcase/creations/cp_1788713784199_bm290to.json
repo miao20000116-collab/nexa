@@ -1,0 +1,518 @@
+{
+  "id": "cp_1788713784199_bm290to",
+  "userId": null,
+  "title": "第一次去成都，3天2夜怎么玩最地道？",
+  "goal": "第一次去成都玩 3 天，怎么…研究",
+  "contentType": "short_video",
+  "platform": "douyin",
+  "status": "ready",
+  "brief": null,
+  "workspaceId": "ws_1788713767021_05nb8th",
+  "startMode": "workspace",
+  "timeline": [
+    {
+      "id": "goal",
+      "label": "目标",
+      "status": "done"
+    },
+    {
+      "id": "context",
+      "label": "上下文",
+      "status": "done"
+    },
+    {
+      "id": "plan",
+      "label": "内容计划",
+      "status": "pending"
+    },
+    {
+      "id": "draft",
+      "label": "草稿",
+      "status": "pending"
+    },
+    {
+      "id": "adapt",
+      "label": "平台适配",
+      "status": "pending"
+    },
+    {
+      "id": "quality",
+      "label": "质量检查",
+      "status": "pending"
+    },
+    {
+      "id": "preview",
+      "label": "预览",
+      "status": "pending"
+    },
+    {
+      "id": "publish",
+      "label": "发布",
+      "status": "pending"
+    }
+  ],
+  "content": {
+    "title": "第一次去成都，3天2夜怎么玩最地道？",
+    "hook": "第一次去成都，只有三天时间，怕玩不完又怕踩坑？别急，这份保姆级攻略，带你玩转精华！",
+    "body": "（口播脚本）\n\n（镜头1：快速剪辑成都标志性画面，如宽窄巷子青砖墙、火锅、大熊猫，配合快节奏音乐）\n旁白：第一次来成都，时间紧任务重，怎么安排才能又经典又地道？\n\n（镜头2：转场到博主在锦里或类似古街的镜头，手持攻略卡片）\n旁白：这份三天两夜精华攻略，赶紧收藏！\n\n（镜头3：画面出现“DAY 1”字样，配合武侯祠红墙竹影或杜甫草堂的快速镜头）\n旁白：第一天，主打文化体验。上午去武侯祠感受三国文化，旁边的锦里可以一起逛，吃吃小吃。下午去杜甫草堂，环境清幽。晚上，必须安排一顿地道火锅！\n\n（镜头4：画面出现“DAY 2”字样，配合大熊猫基地的可爱熊猫镜头和IFS爬墙熊猫的现代都市镜头）\n旁白：第二天，上午去看顶流女明星花花！记得早点去熊猫基地。下午回到市区，逛逛春熙路、太古里，打卡IFS爬墙熊猫。晚上可以去九眼桥或者玉林路的小酒馆坐坐。\n\n（镜头5：画面出现“DAY 3”字样，配合宽窄巷子或人民公园喝茶的悠闲镜头）\n旁白：最后一天，放慢节奏。上午去宽窄巷子感受老成都的巷子文化。下午去人民公园，体验一下鹤鸣茶社的‘摆龙门阵’，这才是成都的慢生活。\n\n（镜头6：博主总结性镜头，微笑面对镜头）",
+    "structure": "1. 开场钩子：快速混剪成都标志性元素，提出问题，引出攻略。\n2. 行程总览：展示三天两夜的核心框架。\n3. 第一天分镜：文化古迹（武侯祠/锦里）+ 经典火锅。\n4. 第二天分镜：自然萌宠（大熊猫基地）+ 现代都市（春熙路/太古里）+ 夜生活（九眼桥/小酒馆）。\n5. 第三天分镜：老街巷体验（宽窄巷子）+ 本地慢生活（人民公园喝茶）。\n6. 结尾总结：博主出镜，强化记忆点。",
+    "cta": "这份成都3天攻略够精华了吧？你还有哪些私藏玩法？评论区告诉我！",
+    "hashtags": [
+      "成都旅游",
+      "成都攻略",
+      "三天两夜旅行",
+      "第一次来成都",
+      "成都美食",
+      "大熊猫花花",
+      "旅行vlog"
+    ],
+    "coverSuggestion": "画面左侧为成都特色元素（如红色鼓面、青砖墙、熊猫玩偶），右侧醒目大字标题‘成都3天2夜攻略’，背景虚化处理，突出文字信息和文化氛围对比。",
+    "__videoProject": {
+      "materialStrategy": "more_ai",
+      "coverage": {
+        "targetDurationSec": 30,
+        "existingCoverageSec": 0,
+        "ownedVideoSec": 0,
+        "imageAnimationSec": 0,
+        "aiRequiredCoverageSec": 30,
+        "aiVideoNeededSec": 30,
+        "mode": "more_ai",
+        "summary": "30 秒：已有覆盖 0 秒（视频 0 + 图片动画 0）· AI 需补 30 秒"
+      },
+      "storyboard": {
+        "script": "AI 按参考链接线索改写分镜。围绕「第一次去成都，3天2夜怎么玩最地道？」约 30 秒。分镜按口播结构拆开（开场→展开→收尾），每镜画面/旁白不同；可编辑后再导出。已有素材覆盖 0s，AI 缺口 30s。",
+        "shots": [
+          {
+            "id": "shot_1",
+            "order": 1,
+            "durationSec": 5,
+            "description": "快速混剪：青砖灰瓦的宽窄巷子、红油翻滚的火锅、大熊猫花花吃竹子的特写，画面节奏由慢到快，最后定格在“3天2夜”的醒目字幕上。",
+            "sourceType": "ai_video",
+            "assetId": "97c7bb21-d1e2-45c6-93c6-93ab2ef6683d",
+            "subtitle": "第一次去成都，只有3天时间？",
+            "narration": "第一次来成都，时间紧任务重，怕玩不完又怕踩坑？",
+            "notes": "AI 视频画面已生成"
+          },
+          {
+            "id": "shot_2",
+            "order": 2,
+            "durationSec": 5,
+            "description": "博主站在锦里古街的入口，手持一张设计精美的攻略卡片（卡片上清晰标注“DAY 1/2/3”），微笑着将卡片展示给镜头。背景是古街的红灯笼和熙攘人群。",
+            "sourceType": "ai_video",
+            "assetId": "93553ce6-2619-4458-b776-d3ad508bf71c",
+            "subtitle": "这份保姆级精华攻略，带你玩转成都！",
+            "narration": "别急，这份三天两夜保姆级攻略，赶紧收藏，带你玩转精华！",
+            "notes": "AI 视频画面已生成"
+          },
+          {
+            "id": "shot_3",
+            "order": 3,
+            "durationSec": 5,
+            "description": "画面中央出现“DAY 1 文化漫游”的动态字样。左侧分屏是武侯祠著名的红墙竹影（光影斑驳），右侧分屏是锦里小吃街琳琅满目的糖画、三大炮等特色小吃特写。",
+            "sourceType": "ai_video",
+            "assetId": "69acb147-435d-4100-accc-554b57aca3ff",
+            "subtitle": "第一天：武侯祠三国魂 + 锦里小吃街",
+            "narration": "第一天，主打文化体验。上午去武侯祠，感受‘丞相祠堂何处寻’的三国文化，旁边的锦里可以一站式吃遍龙抄手、钟水饺等地道小吃。",
+            "notes": "AI 视频画面已生成"
+          },
+          {
+            "id": "shot_4",
+            "order": 4,
+            "durationSec": 5,
+            "description": "画面中央出现“DAY 2 萌宠都市”字样。上方是熊猫基地里熊猫幼崽玩耍的可爱镜头，下方是IFS商场楼顶“爬墙熊猫”雕塑与春熙路时尚街景的快速切换，形成“自然萌宠”与“现代地标”的对比。",
+            "sourceType": "ai_video",
+            "assetId": "432fd6aa-68d1-459e-bc9e-b0f6006ccaaa",
+            "subtitle": "第二天：看顶流花花 + 打卡时尚地标",
+            "narration": "第二天，上午必须去看顶流女明星花花！记住攻略关键：一定要早去。下午回到市区，逛逛春熙路太古里，打卡必拍的IFS爬墙熊猫。",
+            "notes": "AI 视频画面已生成"
+          },
+          {
+            "id": "shot_5",
+            "order": 5,
+            "durationSec": 5,
+            "description": "画面中央出现“DAY 3 慢生活”字样。镜头从宽窄巷子的井巷子慢慢拉远，过渡到人民公园鹤鸣茶社的全景：竹椅、盖碗茶、悠闲喝茶“摆龙门阵”的本地人，阳光透过树叶洒下光斑。",
+            "sourceType": "ai_video",
+            "assetId": "1ec9b322-ffc3-46ff-99a1-fabd3fa68850",
+            "subtitle": "第三天：宽窄巷子 + 人民公园喝盖碗茶",
+            "narration": "最后一天，放慢节奏。上午逛宽窄巷子，下午一定要去人民公园的鹤鸣茶社，点一碗盖碗茶，体验一下本地人‘摆龙门阵’的慢生活，这才是成都的灵魂。",
+            "notes": "AI 视频画面已生成"
+          },
+          {
+            "id": "shot_6",
+            "order": 6,
+            "durationSec": 5,
+            "description": "博主坐在一个茶馆的竹椅上，背后是若隐若现的川式建筑，正面微笑看向镜头，做出“点赞”和“评论”的手势。画面下方出现“评论区告诉我”的互动引导图标。",
+            "sourceType": "ai_video",
+            "assetId": "d63aedb3-2e86-46a3-a38d-410e8cbaa21c",
+            "subtitle": "这份3天攻略够精华吗？你的私藏玩法是？",
+            "narration": "这份成都三天攻略够精华了吧？你还有哪些私藏的玩法或者小店？快来评论区告诉我！",
+            "notes": "AI 视频画面已生成"
+          }
+        ],
+        "musicStrategy": "Music Track 必需。优先级：①用户上传 ②合法曲库 ③AI Music。禁止抓取版权音乐。",
+        "subtitleStyle": "底部安全区，简体中文",
+        "narrationNotes": "各镜头旁白来自文案拆分，可改；默认即可用于时间线，导出仍需素材或 AI 补镜。",
+        "updatedAt": "2026-09-06T17:11:53.254Z"
+      },
+      "timeline": {
+        "version": 1,
+        "aspectRatio": "9:16",
+        "durationSec": 30,
+        "videoTrack": {
+          "id": "video",
+          "scenes": [
+            {
+              "id": "shot_1",
+              "track": "video",
+              "start": 0,
+              "end": 5,
+              "assetId": "97c7bb21-d1e2-45c6-93c6-93ab2ef6683d",
+              "sourceType": "ai_video",
+              "text": "第一次去成都，只有3天时间？",
+              "prompt": "快速混剪：青砖灰瓦的宽窄巷子、红油翻滚的火锅、大熊猫花花吃竹子的特写，画面节奏由慢到快，最后定格在“3天2夜”的醒目字幕上。",
+              "transition": "cut",
+              "cutOnBeat": false
+            },
+            {
+              "id": "shot_2",
+              "track": "video",
+              "start": 5,
+              "end": 10,
+              "assetId": "93553ce6-2619-4458-b776-d3ad508bf71c",
+              "sourceType": "ai_video",
+              "text": "这份保姆级精华攻略，带你玩转成都！",
+              "prompt": "博主站在锦里古街的入口，手持一张设计精美的攻略卡片（卡片上清晰标注“DAY 1/2/3”），微笑着将卡片展示给镜头。背景是古街的红灯笼和熙攘人群。",
+              "transition": "cut",
+              "cutOnBeat": false
+            },
+            {
+              "id": "shot_3",
+              "track": "video",
+              "start": 10,
+              "end": 15,
+              "assetId": "69acb147-435d-4100-accc-554b57aca3ff",
+              "sourceType": "ai_video",
+              "text": "第一天：武侯祠三国魂 + 锦里小吃街",
+              "prompt": "画面中央出现“DAY 1 文化漫游”的动态字样。左侧分屏是武侯祠著名的红墙竹影（光影斑驳），右侧分屏是锦里小吃街琳琅满目的糖画、三大炮等特色小吃特写。",
+              "transition": "cut",
+              "cutOnBeat": false
+            },
+            {
+              "id": "shot_4",
+              "track": "video",
+              "start": 15,
+              "end": 20,
+              "assetId": "432fd6aa-68d1-459e-bc9e-b0f6006ccaaa",
+              "sourceType": "ai_video",
+              "text": "第二天：看顶流花花 + 打卡时尚地标",
+              "prompt": "画面中央出现“DAY 2 萌宠都市”字样。上方是熊猫基地里熊猫幼崽玩耍的可爱镜头，下方是IFS商场楼顶“爬墙熊猫”雕塑与春熙路时尚街景的快速切换，形成“自然萌宠”与“现代地标”的对比。",
+              "transition": "cut",
+              "cutOnBeat": false
+            },
+            {
+              "id": "shot_5",
+              "track": "video",
+              "start": 20,
+              "end": 25,
+              "assetId": "1ec9b322-ffc3-46ff-99a1-fabd3fa68850",
+              "sourceType": "ai_video",
+              "text": "第三天：宽窄巷子 + 人民公园喝盖碗茶",
+              "prompt": "画面中央出现“DAY 3 慢生活”字样。镜头从宽窄巷子的井巷子慢慢拉远，过渡到人民公园鹤鸣茶社的全景：竹椅、盖碗茶、悠闲喝茶“摆龙门阵”的本地人，阳光透过树叶洒下光斑。",
+              "transition": "cut",
+              "cutOnBeat": false
+            },
+            {
+              "id": "shot_6",
+              "track": "video",
+              "start": 25,
+              "end": 30,
+              "assetId": "d63aedb3-2e86-46a3-a38d-410e8cbaa21c",
+              "sourceType": "ai_video",
+              "text": "这份3天攻略够精华吗？你的私藏玩法是？",
+              "prompt": "博主坐在一个茶馆的竹椅上，背后是若隐若现的川式建筑，正面微笑看向镜头，做出“点赞”和“评论”的手势。画面下方出现“评论区告诉我”的互动引导图标。",
+              "transition": "cut",
+              "cutOnBeat": false
+            }
+          ]
+        },
+        "imageTrack": {
+          "id": "image",
+          "scenes": []
+        },
+        "textTrack": {
+          "id": "text",
+          "scenes": [
+            {
+              "id": "shot_1_sub",
+              "track": "text",
+              "start": 0,
+              "end": 5,
+              "assetId": null,
+              "sourceType": "text",
+              "text": "第一次去成都，只有3天时间？",
+              "prompt": "快速混剪：青砖灰瓦的宽窄巷子、红油翻滚的火锅、大熊猫花花吃竹子的特写，画面节奏由慢到快，最后定格在“3天2夜”的醒目字幕上。",
+              "transition": "cut",
+              "cutOnBeat": false
+            },
+            {
+              "id": "shot_2_sub",
+              "track": "text",
+              "start": 5,
+              "end": 10,
+              "assetId": null,
+              "sourceType": "text",
+              "text": "这份保姆级精华攻略，带你玩转成都！",
+              "prompt": "博主站在锦里古街的入口，手持一张设计精美的攻略卡片（卡片上清晰标注“DAY 1/2/3”），微笑着将卡片展示给镜头。背景是古街的红灯笼和熙攘人群。",
+              "transition": "cut",
+              "cutOnBeat": false
+            },
+            {
+              "id": "shot_3_sub",
+              "track": "text",
+              "start": 10,
+              "end": 15,
+              "assetId": null,
+              "sourceType": "text",
+              "text": "第一天：武侯祠三国魂 + 锦里小吃街",
+              "prompt": "画面中央出现“DAY 1 文化漫游”的动态字样。左侧分屏是武侯祠著名的红墙竹影（光影斑驳），右侧分屏是锦里小吃街琳琅满目的糖画、三大炮等特色小吃特写。",
+              "transition": "cut",
+              "cutOnBeat": false
+            },
+            {
+              "id": "shot_4_sub",
+              "track": "text",
+              "start": 15,
+              "end": 20,
+              "assetId": null,
+              "sourceType": "text",
+              "text": "第二天：看顶流花花 + 打卡时尚地标",
+              "prompt": "画面中央出现“DAY 2 萌宠都市”字样。上方是熊猫基地里熊猫幼崽玩耍的可爱镜头，下方是IFS商场楼顶“爬墙熊猫”雕塑与春熙路时尚街景的快速切换，形成“自然萌宠”与“现代地标”的对比。",
+              "transition": "cut",
+              "cutOnBeat": false
+            },
+            {
+              "id": "shot_5_sub",
+              "track": "text",
+              "start": 20,
+              "end": 25,
+              "assetId": null,
+              "sourceType": "text",
+              "text": "第三天：宽窄巷子 + 人民公园喝盖碗茶",
+              "prompt": "画面中央出现“DAY 3 慢生活”字样。镜头从宽窄巷子的井巷子慢慢拉远，过渡到人民公园鹤鸣茶社的全景：竹椅、盖碗茶、悠闲喝茶“摆龙门阵”的本地人，阳光透过树叶洒下光斑。",
+              "transition": "cut",
+              "cutOnBeat": false
+            },
+            {
+              "id": "shot_6_sub",
+              "track": "text",
+              "start": 25,
+              "end": 30,
+              "assetId": null,
+              "sourceType": "text",
+              "text": "这份3天攻略够精华吗？你的私藏玩法是？",
+              "prompt": "博主坐在一个茶馆的竹椅上，背后是若隐若现的川式建筑，正面微笑看向镜头，做出“点赞”和“评论”的手势。画面下方出现“评论区告诉我”的互动引导图标。",
+              "transition": "cut",
+              "cutOnBeat": false
+            }
+          ]
+        },
+        "musicTrack": {
+          "id": "music_main",
+          "sourceKind": "user_upload",
+          "assetId": null,
+          "url": null,
+          "license": null,
+          "bpm": null,
+          "beats": [],
+          "sections": [],
+          "scenes": []
+        },
+        "voiceTrack": {
+          "id": "voice",
+          "scenes": [
+            {
+              "id": "shot_1_voice",
+              "track": "voice",
+              "start": 0,
+              "end": 5,
+              "sourceType": "voice",
+              "text": "第一次去成都，只有3天时间？"
+            },
+            {
+              "id": "shot_2_voice",
+              "track": "voice",
+              "start": 5,
+              "end": 10,
+              "sourceType": "voice",
+              "text": "这份保姆级精华攻略，带你玩转成都！"
+            },
+            {
+              "id": "shot_3_voice",
+              "track": "voice",
+              "start": 10,
+              "end": 15,
+              "sourceType": "voice",
+              "text": "第一天：武侯祠三国魂 + 锦里小吃街"
+            },
+            {
+              "id": "shot_4_voice",
+              "track": "voice",
+              "start": 15,
+              "end": 20,
+              "sourceType": "voice",
+              "text": "第二天：看顶流花花 + 打卡时尚地标"
+            },
+            {
+              "id": "shot_5_voice",
+              "track": "voice",
+              "start": 20,
+              "end": 25,
+              "sourceType": "voice",
+              "text": "第三天：宽窄巷子 + 人民公园喝盖碗茶"
+            },
+            {
+              "id": "shot_6_voice",
+              "track": "voice",
+              "start": 25,
+              "end": 30,
+              "sourceType": "voice",
+              "text": "这份3天攻略够精华吗？你的私藏玩法是？"
+            }
+          ]
+        },
+        "effectTrack": {
+          "id": "effect",
+          "scenes": []
+        },
+        "updatedAt": "2026-09-06T17:11:53.254Z"
+      },
+      "jobStatus": "completed",
+      "jobMessage": "成片已导出，可在下方预览播放。",
+      "previewUrl": "/api/video/render/file/cp_1788713784199_bm290to",
+      "exportUrl": "/api/video/render/file/cp_1788713784199_bm290to",
+      "playheadSec": 0,
+      "costEstimate": {
+        "available": true,
+        "estimatedCredits": 120,
+        "aiShots": 6,
+        "aiSeconds": 30,
+        "message": "预计消耗约 120 Credits（仅补 30 秒 / 6 个 AI 镜头；确认后才执行）",
+        "planFingerprint": "dfb03b3d4462ff8b"
+      },
+      "lastGeneratedFingerprint": "dd0de01fa628bc09"
+    }
+  },
+  "sources": [
+    {
+      "id": "src_1788713784199_p6m327l",
+      "kind": "workspace_source",
+      "workspaceId": "ws_1788713767021_05nb8th",
+      "title": "工作区资料"
+    },
+    {
+      "id": "src_1788713767024_cmr7ycx",
+      "kind": "workspace_source",
+      "title": "第一次到成都该怎么玩?看这篇攻略就够了._哔哩哔哩_bilibili",
+      "url": "https://v.sogou.com/vc/np?type=play&link=grstknlbmqydmndggjsdam3fgm2tgylemnqwcndggvsdonbrhbrqsmjxha4domjtgyztsclon5zg2ylml5ygyylzbfuhi5dqom5c6l3xo53s4ytjnruwe2lmnexgg33nf53gszdfn4xuevrrgf2ti3jrm43w6wbph5zxa3k7nfsf6ztsn5wt2mztgmxdoobyfzzgky3pnvwwk3tel5ww64tfl53gszdfn4xdcmrgmzzg63lwonxwo33vhuysmyttn52xey3fhvzw6z3poutgm4r5onsw6ltcnfwgsytjnrus4y3pnu&query=%E6%88%90%E9%83%BD%E6%97%85%E6%B8%B8%E6%94%BB%E7%95%A5+%E8%A1%8C%E7%A8%8B&fr=seo.bilibili.com&docid=80000851_67cc99babfc1dffb8945b5ad05989607",
+      "snippet": "【媒体识别 · 二创参考】bilibili\n参考链接（仅作结构/风格参考，不复制原作）：https://v.sogou.com/vc/np?type=play&link=grstknlbmqydmndggjsdam3fgm2tgylemnqwcndggvsdonbrhbrqsmjxha4domjtgyztsclon5zg2ylml5ygyylzbfuhi5dqom5c6l3xo53s4ytjnruwe2lmnexgg33nf53gszdfn4xuevrrgf2ti3jrm43w6wbph5zxa3k7nfsf6ztsn5wt2mztgmxdoobyfzzgky3pnvwwk3tel5ww64tfl53gszdfn4xdcmrgmzzg63lwonxwo33vhuysmyttn52xey3fhvzw6z3poutgm4r5onsw6ltcnfwgsytjnrus4y3pnu&query=%E",
+      "workspaceId": "ws_1788713767021_05nb8th"
+    },
+    {
+      "id": "88dccd36-d238-4f09-8b82-6860b6e46c4c",
+      "kind": "asset",
+      "title": "第一次到成都该怎么玩?看这篇攻略就够了._哔哩哔哩_bilibili",
+      "assetId": "88dccd36-d238-4f09-8b82-6860b6e46c4c"
+    },
+    {
+      "id": "68827d28-a78b-4b48-ac7d-05e639b7d2c7",
+      "kind": "asset",
+      "title": "第一次到成都该怎么玩?看这篇攻略就够了._哔哩哔哩_bilibili",
+      "assetId": "68827d28-a78b-4b48-ac7d-05e639b7d2c7"
+    }
+  ],
+  "promptOverride": null,
+  "createdAt": "2026-09-06T16:56:24.199Z",
+  "updatedAt": "2026-09-06T17:49:25.624Z",
+  "assets": [
+    {
+      "id": "ca_1788714713250_0",
+      "projectId": "cp_1788713784199_bm290to",
+      "assetId": "88dccd36-d238-4f09-8b82-6860b6e46c4c",
+      "role": "media",
+      "sortOrder": 0,
+      "usage": null,
+      "selected": true,
+      "createdAt": "2026-09-06T17:11:53.250Z"
+    },
+    {
+      "id": "ca_1788714713250_1",
+      "projectId": "cp_1788713784199_bm290to",
+      "assetId": "68827d28-a78b-4b48-ac7d-05e639b7d2c7",
+      "role": "media",
+      "sortOrder": 1,
+      "usage": null,
+      "selected": true,
+      "createdAt": "2026-09-06T17:11:53.250Z"
+    },
+    {
+      "id": "ca_1788714713250_2",
+      "projectId": "cp_1788713784199_bm290to",
+      "assetId": "97c7bb21-d1e2-45c6-93c6-93ab2ef6683d",
+      "role": "media",
+      "sortOrder": 2,
+      "usage": null,
+      "selected": true,
+      "createdAt": "2026-09-06T17:11:53.250Z"
+    },
+    {
+      "id": "ca_1788714713250_3",
+      "projectId": "cp_1788713784199_bm290to",
+      "assetId": "93553ce6-2619-4458-b776-d3ad508bf71c",
+      "role": "media",
+      "sortOrder": 3,
+      "usage": null,
+      "selected": true,
+      "createdAt": "2026-09-06T17:11:53.250Z"
+    },
+    {
+      "id": "ca_1788714713250_4",
+      "projectId": "cp_1788713784199_bm290to",
+      "assetId": "69acb147-435d-4100-accc-554b57aca3ff",
+      "role": "media",
+      "sortOrder": 4,
+      "usage": null,
+      "selected": true,
+      "createdAt": "2026-09-06T17:11:53.250Z"
+    },
+    {
+      "id": "ca_1788714713250_5",
+      "projectId": "cp_1788713784199_bm290to",
+      "assetId": "432fd6aa-68d1-459e-bc9e-b0f6006ccaaa",
+      "role": "media",
+      "sortOrder": 5,
+      "usage": null,
+      "selected": true,
+      "createdAt": "2026-09-06T17:11:53.250Z"
+    },
+    {
+      "id": "ca_1788714713250_6",
+      "projectId": "cp_1788713784199_bm290to",
+      "assetId": "1ec9b322-ffc3-46ff-99a1-fabd3fa68850",
+      "role": "media",
+      "sortOrder": 6,
+      "usage": null,
+      "selected": true,
+      "createdAt": "2026-09-06T17:11:53.250Z"
+    },
+    {
+      "id": "ca_1788714713250_7",
+      "projectId": "cp_1788713784199_bm290to",
+      "assetId": "d63aedb3-2e86-46a3-a38d-410e8cbaa21c",
+      "role": "media",
+      "sortOrder": 7,
+      "usage": null,
+      "selected": true,
+      "createdAt": "2026-09-06T17:11:53.250Z"
+    }
+  ]
+}

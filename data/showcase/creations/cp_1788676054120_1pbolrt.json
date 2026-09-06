@@ -122,10 +122,10 @@
         "narrationNotes": "口播可按分镜微调",
         "updatedAt": "2026-09-06T06:33:07.149Z"
       },
-      "jobStatus": "failed",
-      "jobMessage": "即梦曾拒绝访问；文案与分镜已保留，可重新补镜头后导出。",
-      "previewUrl": null,
-      "exportUrl": null,
+      "jobStatus": "completed",
+      "jobMessage": "成片已导出，可在下方预览播放。",
+      "previewUrl": "/api/video/render/file/cp_1788676054120_1pbolrt",
+      "exportUrl": "/api/video/render/file/cp_1788676054120_1pbolrt",
       "playheadSec": 0
     }
   },
@@ -139,6 +139,6 @@
   ],
   "promptOverride": null,
   "createdAt": "2026-09-06T06:27:34.120Z",
-  "updatedAt": "2026-09-06T17:30:35.925Z",
+  "updatedAt": "2026-09-06T17:49:25.624Z",
   "assets": []
 }

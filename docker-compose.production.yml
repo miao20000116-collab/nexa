@@ -75,6 +75,9 @@ services:
       REDIS_URL: redis://redis:6379
       SEARXNG_BASE_URL: http://searxng:8080
       PORT: "3000"
+    volumes:
+      # Persist rendered MP4s across container rebuilds (bind mount for easy upload)
+      - /opt/nexa/media:/app/.nexa-data
     depends_on:
       postgres:
         condition: service_healthy

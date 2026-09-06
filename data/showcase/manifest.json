@@ -1,13 +1,15 @@
 {
-  "version": 1,
-  "description": "西红柿炒鸡蛋共享演示：全账号 + 游客可见",
+  "version": 2,
+  "description": "共享演示：西红柿炒鸡蛋 + 成都行程（含成片）",
   "creations": [
     "cp_1788673504290_eujpk2n",
-    "cp_1788676054120_1pbolrt"
+    "cp_1788676054120_1pbolrt",
+    "cp_1788713784199_bm290to"
   ],
   "workspaces": [
     "ws_1788673467325_j8uwym3",
-    "ws_1788675908892_llshfll"
+    "ws_1788675908892_llshfll",
+    "ws_1788713767021_05nb8th"
   ],
-  "updatedAt": "2026-09-06T17:30:35.925Z"
+  "updatedAt": "2026-09-06T17:49:25.624Z"
 }
