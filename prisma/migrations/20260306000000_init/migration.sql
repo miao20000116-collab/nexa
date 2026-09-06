@@ -1,4 +1,4 @@
-﻿-- CreateTable
+-- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "email" TEXT,
@@ -62,7 +62,7 @@ CREATE TABLE "Workspace" (
     "id" TEXT NOT NULL,
     "userId" TEXT,
     "sessionId" TEXT,
-    "name" TEXT NOT NULL DEFAULT '涓存椂宸ヤ綔鍖?,
+    "name" TEXT NOT NULL DEFAULT '临时工作区',
     "description" TEXT,
     "status" TEXT NOT NULL DEFAULT 'active',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -134,7 +134,7 @@ CREATE TABLE "CreationProject" (
     "id" TEXT NOT NULL,
     "userId" TEXT,
     "workspaceId" TEXT,
-    "title" TEXT NOT NULL DEFAULT '鏈懡鍚嶅垱浣?,
+    "title" TEXT NOT NULL DEFAULT '未命名创作',
     "goal" TEXT,
     "contentType" TEXT,
     "platform" TEXT,
@@ -734,4 +734,3 @@ ALTER TABLE "TikTokDemoVideo" ADD CONSTRAINT "TikTokDemoVideo_creatorId_fkey" FO
 
 -- AddForeignKey
 ALTER TABLE "TikTokDemoVideoDaily" ADD CONSTRAINT "TikTokDemoVideoDaily_videoId_fkey" FOREIGN KEY ("videoId") REFERENCES "TikTokDemoVideo"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
