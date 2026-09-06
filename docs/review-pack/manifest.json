@@ -1,0 +1,170 @@
+{
+  "generatedAt": "2026-09-03T04:24:26.489Z",
+  "base": "http://localhost:3000",
+  "pdf": "D:\\苗晓荣\\AI产品经理\\作品集\\Nexa搜索引擎\\docs\\review-pack\\Nexa_创作与跨境商业_功能评审包.pdf",
+  "html": "D:\\苗晓荣\\AI产品经理\\作品集\\Nexa搜索引擎\\docs\\review-pack\\review.html",
+  "screenshots": [
+    {
+      "id": "00-home",
+      "url": "/",
+      "title": "首页",
+      "module": "入口",
+      "file": "00-home.png",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "01-create-hub",
+      "url": "/create",
+      "title": "创作中心",
+      "module": "创作",
+      "file": "01-create-hub.png",
+      "width": 1440,
+      "height": 1696
+    },
+    {
+      "id": "02-create-image",
+      "url": "/create/image",
+      "title": "AI 图片生产",
+      "module": "创作",
+      "file": "02-create-image.png",
+      "width": 1440,
+      "height": 1371
+    },
+    {
+      "id": "03-create-workbench",
+      "url": "/create/cp_1788358781551_n3a0wb3",
+      "title": "创作工作台（项目详情）",
+      "module": "创作",
+      "file": "03-create-workbench.png",
+      "width": 1440,
+      "height": 1546
+    },
+    {
+      "id": "04-assets",
+      "url": "/assets",
+      "title": "我的素材",
+      "module": "创作",
+      "file": "04-assets.png",
+      "width": 1440,
+      "height": 1410
+    },
+    {
+      "id": "05-publish",
+      "url": "/publish",
+      "title": "发布中心",
+      "module": "创作",
+      "file": "05-publish.png",
+      "width": 1440,
+      "height": 1636
+    },
+    {
+      "id": "10-commerce-hub",
+      "url": "/commerce",
+      "title": "跨境商业入口",
+      "module": "跨境",
+      "file": "10-commerce-hub.png",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "11-amz-overview",
+      "url": "/commerce/amazon",
+      "title": "Amazon 经营概览",
+      "module": "跨境-Amazon",
+      "file": "11-amz-overview.png",
+      "width": 1440,
+      "height": 1006
+    },
+    {
+      "id": "12-amz-products",
+      "url": "/commerce/amazon/products",
+      "title": "Amazon 商品诊断列表",
+      "module": "跨境-Amazon",
+      "file": "12-amz-products.png",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "13-amz-product-detail",
+      "url": "/commerce/amazon/products/prod_portable_blender",
+      "title": "Amazon 商品诊断详情",
+      "module": "跨境-Amazon",
+      "file": "13-amz-product-detail.png",
+      "width": 1440,
+      "height": 2632
+    },
+    {
+      "id": "14-amz-ads",
+      "url": "/commerce/amazon/ads",
+      "title": "Amazon 广告诊断",
+      "module": "跨境-Amazon",
+      "file": "14-amz-ads.png",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "15-amz-profit",
+      "url": "/commerce/amazon/profit",
+      "title": "Amazon 利润",
+      "module": "跨境-Amazon",
+      "file": "15-amz-profit.png",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "16-amz-inventory",
+      "url": "/commerce/amazon/inventory",
+      "title": "Amazon 库存风险",
+      "module": "跨境-Amazon",
+      "file": "16-amz-inventory.png",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "20-tt-overview",
+      "url": "/commerce/tiktok",
+      "title": "TikTok Shop 经营概览",
+      "module": "跨境-TikTok",
+      "file": "20-tt-overview.png",
+      "width": 1440,
+      "height": 930
+    },
+    {
+      "id": "21-tt-products",
+      "url": "/commerce/tiktok/products",
+      "title": "TikTok 商品诊断列表",
+      "module": "跨境-TikTok",
+      "file": "21-tt-products.png",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "22-tt-product-detail",
+      "url": "/commerce/tiktok/products/tt_prod_blender",
+      "title": "TikTok 商品诊断详情",
+      "module": "跨境-TikTok",
+      "file": "22-tt-product-detail.png",
+      "width": 1440,
+      "height": 3210
+    },
+    {
+      "id": "23-tt-content",
+      "url": "/commerce/tiktok/content",
+      "title": "TikTok 内容经营",
+      "module": "跨境-TikTok",
+      "file": "23-tt-content.png",
+      "width": 1440,
+      "height": 1319
+    },
+    {
+      "id": "24-tt-creators",
+      "url": "/commerce/tiktok/creators",
+      "title": "Creator / Affiliate",
+      "module": "跨境-TikTok",
+      "file": "24-tt-creators.png",
+      "width": 1440,
+      "height": 900
+    }
+  ]
+}

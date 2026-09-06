@@ -1,0 +1,22 @@
+# Nexa local SearXNG settings
+# Based on official SearXNG defaults with JSON API enabled for Nexa integration.
+
+use_default_settings: true
+
+server:
+  port: 8080
+  bind_address: "0.0.0.0"
+  secret_key: "nexa-dev-local-secret-change-in-production"
+  limiter: false
+
+search:
+  safe_search: 0
+  autocomplete: ""
+  default_lang: "auto"
+  formats:
+    - html
+    - json
+
+outgoing:
+  request_timeout: 10.0
+  max_request_timeout: 15.0

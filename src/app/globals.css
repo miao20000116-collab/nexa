@@ -1,0 +1,318 @@
+@import "tailwindcss";
+
+:root {
+  /* Background — very light, not heavy beige */
+  --nexa-bg: #fbfbfa;
+  --nexa-bg-muted: #f7f7f6;
+  --nexa-bg-subtle: #f3f3f2;
+
+  /* Text */
+  --nexa-fg: #18181b;
+  --nexa-fg-secondary: #3f3f46;
+  --nexa-fg-tertiary: #71717a;
+  --nexa-fg-muted: #a1a1aa;
+
+  /* Border */
+  --nexa-border: #e8e8ea;
+  --nexa-border-subtle: #f3f3f4;
+  --nexa-border-strong: #d4d4d8;
+
+  /* Surface */
+  --nexa-surface: #ffffff;
+  --nexa-surface-hover: #fbfbfb;
+
+  /* Interactive */
+  --nexa-primary: #18181b;
+  --nexa-primary-fg: #ffffff;
+  --nexa-ring: #a1a1aa;
+
+  /* Search-result link affordance (Baidu/Google-like) */
+  --nexa-link: #1a0dab;
+  --nexa-link-hover: #681da8;
+  --nexa-url: #006621;
+
+  /* Status */
+  --nexa-danger: #dc2626;
+  --nexa-success: #16a34a;
+  --nexa-warning: #ca8a04;
+
+  /* Radius */
+  --nexa-radius-sm: 6px;
+  --nexa-radius: 10px;
+  --nexa-radius-lg: 14px;
+  --nexa-radius-xl: 16px;
+
+  /* Shadow — intentionally minimal */
+  --nexa-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.03);
+  --nexa-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+
+  /* Layout — wide workbench with comfortable side gutters */
+  --nexa-content-max: 1560px;
+  --nexa-content-narrow: 780px;
+  --nexa-header-height: 56px;
+  --nexa-page-pad-x: clamp(1.5rem, 5vw, 4rem);
+
+  --background: var(--nexa-bg);
+  --foreground: var(--nexa-fg);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-nexa-bg: var(--nexa-bg);
+  --color-nexa-bg-muted: var(--nexa-bg-muted);
+  --color-nexa-bg-subtle: var(--nexa-bg-subtle);
+  --color-nexa-fg: var(--nexa-fg);
+  --color-nexa-fg-secondary: var(--nexa-fg-secondary);
+  --color-nexa-fg-tertiary: var(--nexa-fg-tertiary);
+  --color-nexa-fg-muted: var(--nexa-fg-muted);
+  --color-nexa-border: var(--nexa-border);
+  --color-nexa-border-subtle: var(--nexa-border-subtle);
+  --color-nexa-border-strong: var(--nexa-border-strong);
+  --color-nexa-surface: var(--nexa-surface);
+  --color-nexa-primary: var(--nexa-primary);
+  --color-nexa-primary-fg: var(--nexa-primary-fg);
+  --color-nexa-link: var(--nexa-link);
+  --color-nexa-link-hover: var(--nexa-link-hover);
+  --color-nexa-url: var(--nexa-url);
+  --font-sans: var(--font-nexa-sans), "PingFang SC", "Microsoft YaHei",
+    "Hiragino Sans GB", "Noto Sans SC", system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --radius-sm: var(--nexa-radius-sm);
+  --radius-md: var(--nexa-radius);
+  --radius-lg: var(--nexa-radius-lg);
+  --radius-xl: var(--nexa-radius-xl);
+}
+
+body {
+  background: var(--nexa-bg);
+  color: var(--nexa-fg);
+  font-family: var(--font-nexa-sans), "PingFang SC", "Microsoft YaHei",
+    "Hiragino Sans GB", "Noto Sans SC", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  font-feature-settings: "kern" 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: #e4e4e7;
+  color: #18181b;
+}
+
+@keyframes nexa-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.nexa-skeleton {
+  background: var(--nexa-bg-subtle);
+  animation: nexa-pulse 1.6s ease-in-out infinite;
+  border-radius: var(--nexa-radius-sm);
+}
+
+/* Homepage: lock viewport, no scrollbar */
+html.nexa-home-lock,
+html.nexa-home-lock body {
+  height: 100%;
+  overflow: hidden;
+}
+
+/*
+ * Typography hierarchy — title ≠ body ≠ field label.
+ * Prefer these over inventing new sizes per page.
+ */
+.nexa-page-title {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--nexa-fg);
+  line-height: 1.25;
+}
+@media (min-width: 640px) {
+  .nexa-page-title {
+    font-size: 24px;
+  }
+}
+.nexa-page-lead {
+  margin-top: 0.375rem;
+  max-width: 36em;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--nexa-fg-tertiary);
+}
+.nexa-section-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--nexa-fg);
+  line-height: 1.4;
+}
+.nexa-section-label {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--nexa-fg-muted);
+}
+.nexa-body {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--nexa-fg-secondary);
+}
+.nexa-field-label {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--nexa-fg-muted);
+}
+.nexa-field-control {
+  width: 100%;
+  border-radius: var(--nexa-radius);
+  border: 1px solid var(--nexa-border);
+  background: var(--nexa-bg-muted);
+  padding: 0.625rem 0.75rem;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--nexa-fg);
+  outline: none;
+}
+.nexa-field-control:focus {
+  border-color: var(--nexa-border-strong);
+  background: var(--nexa-surface);
+}
+.nexa-field-control::placeholder {
+  color: var(--nexa-fg-muted);
+}
+.nexa-content-block {
+  border-radius: var(--nexa-radius);
+  border: 1px solid var(--nexa-border-subtle);
+  background: color-mix(in srgb, var(--nexa-bg-muted) 60%, transparent);
+  padding: 0.625rem 0.75rem;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--nexa-fg-secondary);
+  white-space: pre-wrap;
+}
+.nexa-section-gap {
+  margin-bottom: 2rem;
+}
+.nexa-section-divided {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--nexa-border-subtle);
+}
+
+/*
+ * Typography hierarchy — title ≠ body ≠ field label.
+ * Prefer these over inventing new sizes per page.
+ */
+.nexa-page-title {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--nexa-fg);
+  line-height: 1.25;
+}
+@media (min-width: 640px) {
+  .nexa-page-title {
+    font-size: 24px;
+  }
+}
+.nexa-page-lead {
+  margin-top: 0.375rem;
+  max-width: 36em;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--nexa-fg-tertiary);
+}
+.nexa-section-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--nexa-fg);
+  line-height: 1.4;
+}
+.nexa-section-label {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--nexa-fg-muted);
+}
+.nexa-body {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--nexa-fg-secondary);
+}
+.nexa-field-label {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--nexa-fg-muted);
+}
+.nexa-field-control {
+  width: 100%;
+  border-radius: var(--nexa-radius);
+  border: 1px solid var(--nexa-border);
+  background: var(--nexa-bg-muted);
+  padding: 0.625rem 0.75rem;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--nexa-fg);
+  outline: none;
+}
+.nexa-field-control:focus {
+  border-color: var(--nexa-border-strong);
+  background: var(--nexa-surface);
+}
+.nexa-field-control::placeholder {
+  color: var(--nexa-fg-muted);
+}
+.nexa-content-block {
+  border-radius: var(--nexa-radius);
+  border: 1px solid var(--nexa-border-subtle);
+  background: color-mix(in srgb, var(--nexa-bg-muted) 60%, transparent);
+  padding: 0.625rem 0.75rem;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--nexa-fg-secondary);
+  white-space: pre-wrap;
+}
+.nexa-section-gap {
+  margin-bottom: 2rem;
+}
+.nexa-section-divided {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--nexa-border-subtle);
+}
+
+/* Search / workspace result affordance */
+.nexa-result-title {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--nexa-link);
+  text-decoration: none;
+}
+.nexa-result-title:hover {
+  text-decoration: underline;
+  color: var(--nexa-link-hover);
+}
+.nexa-result-url {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--nexa-url);
+}
+.nexa-result-snippet {
+  font-size: 13px;
+  line-height: 1.65;
+  color: #4d5156;
+}
+.nexa-result-meta {
+  font-size: 12px;
+  color: var(--nexa-fg-muted);
+}

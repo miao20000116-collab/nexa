@@ -1,0 +1,139 @@
+# 腾讯云 Linux 生产编排（国内主站）
+# Netlify 预览不使用本文件。
+#
+# 用法：
+#   cp .env.production.example .env.production   # 填入真实值（勿提交）
+#   docker compose -f docker-compose.production.yml --env-file .env.production up -d
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-nexa}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-nexa}
+    volumes:
+      - nexa_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-nexa} -d ${POSTGRES_DB:-nexa}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - nexa_internal
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - nexa_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+    networks:
+      - nexa_internal
+
+  searxng:
+    image: docker.io/searxng/searxng:latest
+    restart: unless-stopped
+    volumes:
+      - ./infra/searxng/settings:/etc/searxng:rw
+    environment:
+      - SEARXNG_BASE_URL=http://searxng:8080/
+    # 仅内网；不要映射到公网 0.0.0.0
+    expose:
+      - "8080"
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+    networks:
+      - nexa_internal
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env.production
+    environment:
+      NODE_ENV: production
+      NEXA_RUNTIME: container
+      NEXA_REQUIRE_DATABASE: "1"
+      NEXA_ALLOW_LOCAL_DATA: "0"
+      DATABASE_URL: postgresql://${POSTGRES_USER:-nexa}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-nexa}?schema=public
+      REDIS_URL: redis://redis:6379
+      SEARXNG_BASE_URL: http://searxng:8080
+      PORT: "3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      searxng:
+        condition: service_started
+    expose:
+      - "3000"
+    networks:
+      - nexa_internal
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:3000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    restart: unless-stopped
+    env_file:
+      - .env.production
+    environment:
+      NODE_ENV: production
+      NEXA_REQUIRE_DATABASE: "1"
+      DATABASE_URL: postgresql://${POSTGRES_USER:-nexa}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-nexa}?schema=public
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      web:
+        condition: service_started
+    networks:
+      - nexa_internal
+
+  migrate:
+    image: node:22-bookworm-slim
+    working_dir: /app
+    volumes:
+      - ./:/app
+    env_file:
+      - .env.production
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-nexa}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-nexa}?schema=public
+    command: ["bash", "-lc", "npm ci && npx prisma migrate deploy"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - nexa_internal
+    profiles:
+      - tools
+
+networks:
+  nexa_internal:
+    driver: bridge
+
+volumes:
+  nexa_pg_data:
+  nexa_redis_data:

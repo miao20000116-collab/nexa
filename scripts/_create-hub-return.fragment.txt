@@ -1,0 +1,516 @@
+
+  return (
+    <div className="mx-auto w-full max-w-[760px] px-5 py-10 sm:px-8">
+      <PageHeader
+        title={UI.create.title}
+        description="主路径：粘贴链接 → 上传形象 → 生成成片 → 存入工作区。"
+        actions={
+          <div className="flex flex-wrap gap-4 text-[13px] text-zinc-500">
+            <Link href="/workspace" className="hover:text-zinc-900">
+              工作区
+            </Link>
+            <Link href="/assets" className="hover:text-zinc-900">
+              {UI.create.myAssets}
+            </Link>
+            <Link href="/create/image" className="hover:text-zinc-900">
+              AI 图片
+            </Link>
+          </div>
+        }
+      />
+
+      <section className="mb-8 rounded-2xl border border-zinc-200 bg-white p-5 sm:p-6">
+        <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <p className={typeStyle.sectionLabel}>主功能</p>
+            <h2 className={`mt-1 ${typeStyle.sectionTitle}`}>
+              {PRIMARY_MODE.short}
+            </h2>
+            <p className={`mt-1 ${typeStyle.bodyMuted}`}>{PRIMARY_MODE.desc}</p>
+          </div>
+          {mode !== "link" && (
+            <button
+              type="button"
+              onClick={() => setMode("link")}
+              className="rounded-lg bg-zinc-900 px-3 py-1.5 text-[13px] font-medium text-white"
+            >
+              切回链接二创
+            </button>
+          )}
+        </div>
+
+        {mode === "link" && (
+          <div className="space-y-4">
+            <label className="block">
+              <span className="mb-1.5 block text-[13px] text-zinc-600">
+                1. 粘贴参考链接或完整分享口令
+              </span>
+              <input
+                value={linkUrl}
+                onChange={(e) => {
+                  setLinkUrl(e.target.value);
+                  setSocialIngest(null);
+                  setManualReference("");
+                }}
+                onBlur={() => {
+                  if (detectSocialLink(linkUrl)) {
+                    void runSocialIngest(linkUrl);
+                  }
+                }}
+                placeholder="抖音 / 小红书 / TikTok 链接或口令全文"
+                className="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2.5 text-[14px] outline-none focus:border-zinc-400"
+              />
+            </label>
+
+            <div className="flex flex-wrap gap-2">
+              {(
+                [
+                  { id: "video", label: "生成视频" },
+                  { id: "image", label: "生成图片" },
+                ] as const
+              ).map((opt) => (
+                <button
+                  key={opt.id}
+                  type="button"
+                  onClick={() => {
+                    setOutputKind(opt.id);
+                    setContentType(opt.id === "image" ? "image" : "short_video");
+                  }}
+                  className={`rounded-lg border px-3 py-1.5 text-[13px] ${
+                    outputKind === opt.id
+                      ? "border-zinc-900 bg-zinc-900 text-white"
+                      : "border-zinc-200 text-zinc-600 hover:border-zinc-300"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+
+            {ingesting && (
+              <p className="text-[12px] text-zinc-400">
+                正在真实请求分享页解析元数据（非预置结果）…
+              </p>
+            )}
+
+            {socialIngest && (
+              <div className="space-y-2 rounded-xl border border-zinc-100 bg-zinc-50/80 px-3.5 py-3">
+                <p
+                  className={`text-[13px] leading-relaxed ${
+                    socialIngest.parseStatus === "ok"
+                      ? "text-zinc-700"
+                      : "text-amber-800"
+                  }`}
+                >
+                  解析
+                  {socialIngest.parseStatus === "ok"
+                    ? "成功"
+                    : socialIngest.parseStatus === "partial"
+                      ? "部分成功"
+                      : "失败"}
+                  {" · "}
+                  {socialIngest.parseMethod}
+                  {socialIngest.awemeId ? ` · ID ${socialIngest.awemeId}` : ""}
+                </p>
+                <p className="text-[13px] text-zinc-600">{socialIngest.reason}</p>
+                {socialIngest.title ? (
+                  <p className="text-[14px] font-medium text-zinc-900">
+                    {socialIngest.title}
+                  </p>
+                ) : (
+                  <p className="text-[13px] text-zinc-500">
+                    未拿到标题/封面——平台常收紧分享页。请贴完整口令或手动补充结构。
+                  </p>
+                )}
+                {socialIngest.structureHints.length > 0 && (
+                  <ul className="space-y-0.5 text-[12px] text-zinc-500">
+                    {socialIngest.structureHints.slice(0, 4).map((h) => (
+                      <li key={h}>· {h}</li>
+                    ))}
+                  </ul>
+                )}
+                {socialIngest.parseStatus !== "ok" && (
+                  <label className="mt-2 block">
+                    <span className="mb-1.5 block text-[13px] text-zinc-500">
+                      手动补充结构（推荐）
+                    </span>
+                    <textarea
+                      value={manualReference}
+                      onChange={(e) => setManualReference(e.target.value)}
+                      rows={2}
+                      placeholder="例：前 3 秒强钩子 → 产品特写 → 对比 → CTA。只写结构，不抄原文。"
+                      className="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-[14px] outline-none focus:border-zinc-300"
+                    />
+                  </label>
+                )}
+              </div>
+            )}
+
+            <div>
+              <p className="mb-1.5 text-[13px] text-zinc-600">
+                2. 上传你的形象照片
+              </p>
+              {renderAssetUpload({
+                acceptVideo: false,
+                title: "形象照片（生成必填）",
+                hint: "不下载平台原片；用链接结构 + 你的脸在线生成。",
+              })}
+            </div>
+
+            <label className="block">
+              <span className="mb-1.5 block text-[13px] text-zinc-600">
+                目标说明（可选）
+              </span>
+              <textarea
+                value={goal}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  setGoal(v);
+                  if (v.trim().length > 4) applyGoalInference(v);
+                }}
+                rows={2}
+                placeholder="例如：换成我的形象，保留原片节奏做口播带货"
+                className={typeStyle.fieldControl}
+              />
+            </label>
+
+            {error && <p className="text-[13px] text-red-600">{error}</p>}
+            {identityMessage && (
+              <p className="text-[13px] text-zinc-600">{identityMessage}</p>
+            )}
+
+            {identityPreview && (
+              <div className="space-y-3 rounded-xl border border-zinc-200 p-3">
+                <p className="text-[12px] font-medium text-zinc-400">生成结果</p>
+                {/\.mp4|\/api\/video\//.test(identityPreview) ? (
+                  <video
+                    src={identityPreview}
+                    controls
+                    className="max-h-[420px] w-full rounded-lg bg-black"
+                  />
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={identityPreview}
+                    alt="成片预览"
+                    className="max-h-[420px] rounded-lg object-contain"
+                  />
+                )}
+
+                <div className="flex flex-wrap items-end gap-3">
+                  <label className="min-w-[180px] flex-1">
+                    <span className="mb-1 block text-[12px] text-zinc-500">
+                      存放到工作区
+                    </span>
+                    <select
+                      value={saveWorkspaceId}
+                      onChange={(e) => setSaveWorkspaceId(e.target.value)}
+                      className="w-full rounded-lg border border-zinc-200 px-3 py-2 text-[13px]"
+                    >
+                      <option value="">默认「创作成片」</option>
+                      {selectableWorkspaces.map((w) => (
+                        <option key={w.id} value={w.id}>
+                          {w.name}
+                          {w.count > 0 ? `（${w.count}）` : ""}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => void handleSaveRender()}
+                    disabled={savingRender || !identityJobId}
+                    className="rounded-lg bg-zinc-900 px-4 py-2 text-[13px] font-medium text-white hover:bg-zinc-800 disabled:opacity-40"
+                  >
+                    {savingRender ? "存放中…" : "存入工作区"}
+                  </button>
+                  {identityWorkspaceHref && (
+                    <Link
+                      href={identityWorkspaceHref}
+                      className="rounded-lg border border-zinc-300 px-4 py-2 text-[13px] font-medium text-zinc-800 hover:bg-zinc-50"
+                    >
+                      去工作区查看
+                    </Link>
+                  )}
+                  <a
+                    href={identityPreview}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="px-2 py-2 text-[13px] text-zinc-500 underline underline-offset-2"
+                  >
+                    新窗口打开
+                  </a>
+                </div>
+                {saveMessage && (
+                  <p className="text-[13px] text-zinc-600">{saveMessage}</p>
+                )}
+              </div>
+            )}
+
+            <div className="flex flex-wrap items-center gap-3 pt-1">
+              <button
+                type="button"
+                onClick={() => void handleIdentityRecreate()}
+                disabled={
+                  identityRunning ||
+                  assetIds.length === 0 ||
+                  !detectSocialLink(linkUrl)
+                }
+                className="rounded-lg bg-zinc-900 px-5 py-2.5 text-[14px] font-medium text-white hover:bg-zinc-800 disabled:opacity-40"
+              >
+                {identityRunning
+                  ? "在线生成中…"
+                  : outputKind === "image"
+                    ? "生成图片"
+                    : "生成成片"}
+              </button>
+              <button
+                type="button"
+                onClick={() => void handleCreate()}
+                disabled={submitting || identityRunning}
+                className="rounded-lg border border-zinc-300 bg-white px-5 py-2.5 text-[14px] font-medium text-zinc-800 hover:bg-zinc-50 disabled:opacity-40"
+              >
+                {submitting ? UI.common.loading : "进工作台细改"}
+              </button>
+            </div>
+            <p className="text-[12px] leading-relaxed text-zinc-400">
+              不下载、不缓存平台原片。抖音/小红书/TikTok
+              当前分享页常只返回 ID；口令全文 + 手动结构更稳。
+            </p>
+          </div>
+        )}
+
+        {mode !== "link" && (
+          <p className="text-[13px] text-zinc-500">
+            当前在「
+            {SECONDARY_MODES.find((m) => m.id === mode)?.short ||
+              HIDDEN_MODE_LABELS[mode] ||
+              mode}
+            」模式。主功能在上方，点「切回链接二创」可返回。
+          </p>
+        )}
+      </section>
+
+      <section className="mb-8">
+        <div className="mb-3">
+          <h2 className={typeStyle.sectionTitle}>其他入口</h2>
+          <p className={`mt-1 ${typeStyle.bodyMuted}`}>
+            需要写文案进工作台时用这里；已去掉仅占位的「搜索 / 诊断」主入口。
+          </p>
+        </div>
+        <div className="grid gap-2 sm:grid-cols-3">
+          {SECONDARY_MODES.map((item) => {
+            const active = mode === item.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => {
+                  setMode(item.id);
+                  if (item.id !== "workspace") setWorkspaceId("");
+                }}
+                aria-pressed={active}
+                className={`rounded-xl border px-3.5 py-3 text-left transition-colors ${
+                  active
+                    ? "border-zinc-900 bg-zinc-50"
+                    : "border-zinc-200 bg-white hover:border-zinc-300"
+                }`}
+              >
+                <span
+                  className={`block text-[14px] ${
+                    active ? "font-medium text-zinc-900" : "text-zinc-800"
+                  }`}
+                >
+                  {item.short}
+                </span>
+                <span className="mt-0.5 block text-[12px] text-zinc-500">
+                  {item.desc}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="mt-4 space-y-3">
+          {mode === "workspace" && (
+            <label className="block">
+              <span className="mb-1.5 block text-[13px] text-zinc-500">
+                选择工作区
+              </span>
+              <select
+                value={workspaceId}
+                onChange={(e) => setWorkspaceId(e.target.value)}
+                className="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-[14px]"
+              >
+                <option value="">请选择</option>
+                {selectableWorkspaces.map((w) => (
+                  <option key={w.id} value={w.id}>
+                    {w.name}
+                    {w.count > 0 ? `（${w.count} 条）` : "（暂无资料）"}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
+
+          {mode === "assets" && (
+            <div className="space-y-3">
+              {renderAssetUpload()}
+              <p className="text-[12px] text-zinc-400">
+                也可前往{" "}
+                <Link
+                  href="/assets"
+                  className="underline underline-offset-2 hover:text-zinc-700"
+                >
+                  {UI.create.myAssets}
+                </Link>{" "}
+                管理素材。
+              </p>
+            </div>
+          )}
+
+          {(mode === "commerce" || mode === "search" || mode === "idea") && (
+            <label className="block">
+              <span className="mb-1.5 block text-[13px] text-zinc-500">
+                你想完成什么？
+              </span>
+              <textarea
+                value={goal}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  setGoal(v);
+                  if (v.trim().length > 4) applyGoalInference(v);
+                }}
+                rows={3}
+                placeholder="例如：做一篇 AI 眼镜的小红书真实测评"
+                className={typeStyle.fieldControl}
+              />
+            </label>
+          )}
+
+          {mode === "commerce" && (
+            <p className="text-[13px] text-zinc-500">
+              {commerceContext
+                ? "已带入商品诊断上下文。"
+                : "请从跨境诊断页一键带入，或直接写目标。"}
+            </p>
+          )}
+
+          {mode !== "link" && (
+            <div className="flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={() => void handleCreate()}
+                disabled={submitting}
+                className="rounded-lg bg-zinc-900 px-5 py-2.5 text-[14px] font-medium text-white hover:bg-zinc-800 disabled:opacity-40"
+              >
+                {submitting ? UI.common.loading : "开始创作（进工作台）"}
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowAdvanced((v) => !v)}
+                className="text-[13px] text-zinc-500 hover:text-zinc-800"
+              >
+                {showAdvanced ? "收起选项" : "调整平台与类型"}
+              </button>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {showAdvanced && (
+        <div className="mb-8 grid gap-4 sm:grid-cols-2">
+          <label className="block">
+            <span className="mb-1.5 block text-[13px] text-zinc-500">目标平台</span>
+            <select
+              value={platform}
+              onChange={(e) =>
+                applyPlatform(e.target.value as CreationPlatform)
+              }
+              className="w-full rounded-lg border border-zinc-200 px-3 py-2 text-[14px]"
+            >
+              {PLATFORM_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="block">
+            <span className="mb-1.5 block text-[13px] text-zinc-500">内容类型</span>
+            <select
+              value={contentType}
+              onChange={(e) => setContentType(e.target.value as ContentType)}
+              className="w-full rounded-lg border border-zinc-200 px-3 py-2 text-[14px]"
+            >
+              {contentTypeOptions.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+      )}
+
+      <section className="border-t border-zinc-100 pt-8">
+        <p className={`mb-3 ${typeStyle.sectionLabel}`}>最近项目</p>
+        {visibleProjects.main.length === 0 &&
+        visibleProjects.noise.length === 0 ? (
+          <div className="py-8 text-center">
+            <p className="mb-2 text-[15px] text-zinc-500">还没有创作项目</p>
+            <p className="text-[13px] text-zinc-400">
+              生成成片后可存入工作区；或点「进工作台」创建项目。
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-1">
+            {visibleProjects.main.map((p) => (
+              <Link
+                key={p.id}
+                href={`/create/${p.id}`}
+                className="block border-b border-zinc-50 py-3.5 transition-colors hover:bg-zinc-50/60"
+              >
+                <p className="font-medium text-zinc-900">{p.title}</p>
+                <p className="mt-1 text-[13px] text-zinc-400">
+                  {STATUS_LABELS[p.status] ?? p.status}
+                  {p.platform
+                    ? ` · ${
+                        PLATFORM_OPTIONS.find((x) => x.value === p.platform)
+                          ?.label ?? p.platform
+                      }`
+                    : ""}
+                  {" · "}
+                  {new Date(p.updatedAt).toLocaleString("zh-CN")}
+                </p>
+              </Link>
+            ))}
+            {visibleProjects.noise.length > 0 && (
+              <div className="pt-3">
+                <button
+                  type="button"
+                  onClick={() => setShowNoise((v) => !v)}
+                  className="text-[12px] text-zinc-400 hover:text-zinc-600"
+                >
+                  {showNoise
+                    ? "隐藏测试项目"
+                    : `另有 ${visibleProjects.noise.length} 个测试/噪音项目`}
+                </button>
+                {showNoise &&
+                  visibleProjects.noise.map((p) => (
+                    <Link
+                      key={p.id}
+                      href={`/create/${p.id}`}
+                      className="block border-b border-zinc-50 py-3 text-[13px] text-zinc-400"
+                    >
+                      {p.title || "（无标题）"}
+                    </Link>
+                  ))}
+              </div>
+            )}
+          </div>
+        )}
+      </section>
+    </div>
+  );
+}

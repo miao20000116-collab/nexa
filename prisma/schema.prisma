@@ -1,0 +1,527 @@
+generator client {
+  provider      = "prisma-client-js"
+  // native = local; rhel-openssl-3.0.x = Netlify / AWS Lambda (Node 18+)
+  // debian-openssl-3.0.x = typical Docker / Ubuntu production images
+  binaryTargets = ["native", "rhel-openssl-3.0.x", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String            @id @default(cuid())
+  email         String?           @unique
+  name          String?
+  avatarUrl     String?
+  role          String            @default("guest")
+  authProvider  String?           // email | google
+  googleId      String?           @unique
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  workspaces    Workspace[]
+  assets        Asset[]
+  projects      CreationProject[]
+  jobs          Job[]
+  connections   Connection[]
+  publishRecords PublishRecord[]
+  creditLedgers CreditLedger[]
+  sessions      AuthSession[]
+}
+
+model AuthSession {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([token])
+  @@index([expiresAt])
+}
+
+model SearchSession {
+  id              String         @id @default(cuid())
+  userId          String?
+  query           String
+  normalizedQuery String
+  intent          String
+  createdAt       DateTime       @default(now())
+  results         SearchResult[]
+  workspaces      Workspace[]
+
+  @@index([userId])
+}
+
+model SearchResult {
+  id               String            @id @default(cuid())
+  searchSessionId  String
+  searchSession    SearchSession     @relation(fields: [searchSessionId], references: [id], onDelete: Cascade)
+  platform         String
+  sourceType       String
+  title            String?
+  snippet          String?
+  content          String?
+  url              String
+  thumbnail        String?
+  author           String?
+  publishedAt      DateTime?
+  retrievalMethod  String?
+  rankScore        Float?
+  rawMetadata      Json?
+  createdAt        DateTime          @default(now())
+  workspaceSources WorkspaceSource[]
+
+  @@index([searchSessionId])
+}
+
+model Workspace {
+  id           String            @id @default(cuid())
+  userId       String?
+  user         User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
+  sessionId    String?
+  session      SearchSession?    @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  name         String            @default("临时工作区")
+  description  String?
+  status       String            @default("active")
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  sources      WorkspaceSource[]
+  researchJobs DeepResearchJob[]
+  projects     CreationProject[]
+
+  @@index([sessionId])
+  @@index([userId])
+}
+
+model WorkspaceSource {
+  id             String        @id @default(cuid())
+  workspaceId    String
+  workspace      Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  searchResultId String?
+  searchResult   SearchResult? @relation(fields: [searchResultId], references: [id], onDelete: SetNull)
+  title          String?
+  url            String
+  platform       String
+  sourceType     String
+  snippet        String?
+  author         String?
+  publishedAt    DateTime?
+  thumbnail      String?
+  addedAt        DateTime      @default(now())
+
+  @@unique([workspaceId, url])
+  @@index([workspaceId])
+}
+
+model DeepResearchJob {
+  id          String    @id @default(cuid())
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  goal        String
+  scope       String    @default("workspace")
+  timeRange   String    @default("all")
+  reportType  String    @default("quick")
+  status      String    @default("draft")
+  errorCode   String?
+  report      Json?
+  createdAt   DateTime  @default(now())
+  startedAt   DateTime?
+  completedAt DateTime?
+
+  @@index([workspaceId])
+}
+
+model Asset {
+  id             String          @id @default(cuid())
+  userId         String?
+  user           User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
+  type           String
+  title          String?
+  description    String?
+  url            String?
+  storageKey     String?
+  mimeType       String?
+  sizeBytes      Int?
+  width          Int?
+  height         Int?
+  durationMs     Int?
+  status         String          @default("ready")
+  metadata       Json?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  creationAssets CreationAsset[]
+
+  @@index([userId])
+  @@index([type])
+  @@index([status])
+}
+
+model CreationProject {
+  id          String          @id @default(cuid())
+  userId      String?
+  user        User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
+  workspaceId String?
+  workspace   Workspace?      @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+  title       String          @default("未命名创作")
+  goal        String?
+  contentType String?
+  platform    String?
+  status      String          @default("draft")
+  brief       String?
+  timeline    Json?
+  content     Json?
+  sources     Json?
+  startMode   String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  assets      CreationAsset[]
+  publishes   PublishRecord[]
+
+  @@index([userId])
+  @@index([workspaceId])
+  @@index([status])
+  @@index([platform])
+}
+
+model CreationAsset {
+  id        String          @id @default(cuid())
+  projectId String
+  project   CreationProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  assetId   String
+  asset     Asset           @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  role      String          @default("reference")
+  sortOrder Int             @default(0)
+  usage     String?
+  selected  Boolean         @default(true)
+  createdAt DateTime        @default(now())
+
+  @@unique([projectId, assetId])
+  @@index([projectId])
+}
+
+model Job {
+  id          String    @id @default(cuid())
+  userId      String?
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  type        String
+  status      String    @default("queued")
+  payload     Json?
+  result      Json?
+  errorCode   String?
+  errorMessage String?
+  progress    Int       @default(0)
+  createdAt   DateTime  @default(now())
+  startedAt   DateTime?
+  completedAt DateTime?
+
+  @@index([userId])
+  @@index([type])
+  @@index([status])
+}
+
+model Connection {
+  id           String   @id @default(cuid())
+  userId       String?
+  user         User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  provider     String
+  status       String   @default("disconnected")
+  displayName  String?
+  externalId   String?
+  scopes       String?
+  metadata     Json?
+  connectedAt  DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([userId, provider])
+  @@index([provider])
+  @@index([status])
+}
+
+model PublishRecord {
+  id             String           @id @default(cuid())
+  userId         String?
+  user           User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+  projectId      String?
+  project        CreationProject? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  platform       String
+  accountId      String?
+  connectionId   String?
+  status         String           @default("draft")
+  externalUrl    String?
+  externalPostId String?
+  externalId     String?
+  payload        Json?
+  errorCode      String?
+  errorMessage   String?
+  publishedAt    DateTime?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  @@index([userId])
+  @@index([projectId])
+  @@index([platform])
+  @@index([status])
+}
+
+model CreditLedger {
+  id            String   @id @default(cuid())
+  userId        String?
+  user          User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  type          String
+  amount        Int
+  balance       Int?
+  description   String?
+  referenceType String?
+  referenceId   String?
+  createdAt     DateTime @default(now())
+
+  @@index([userId])
+  @@index([type])
+  @@index([referenceType, referenceId])
+}
+
+// Server-side AI usage - never expose secrets or raw tokens to clients
+model AIUsageLog {
+  id            String   @id @default(cuid())
+  userId        String?
+  capability    String
+  provider      String
+  model         String
+  inputTokens   Int?
+  outputTokens  Int?
+  totalTokens   Int?
+  estimatedCost Float?
+  creditsUsed   Int?
+  status        String
+  latencyMs     Int
+  errorCode     String?
+  referenceType String?
+  referenceId   String?
+  createdAt     DateTime @default(now())
+
+  @@index([userId])
+  @@index([capability])
+  @@index([provider])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model SearchCache {
+  id        String   @id @default(cuid())
+  cacheKey  String   @unique
+  data      Json
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([cacheKey])
+  @@index([expiresAt])
+}
+
+// Amazon Demo Store - all rows are demonstration data (isDemo)
+model DemoStore {
+  id          String        @id @default(cuid())
+  name        String
+  marketplace String        @default("US")
+  currency    String        @default("USD")
+  isDemo      Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  products    DemoProduct[]
+}
+
+model DemoProduct {
+  id                  String             @id @default(cuid())
+  storeId             String
+  store               DemoStore          @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  asin                String
+  sku                 String
+  title               String
+  category            String?
+  price               Float
+  cogs                Float
+  platformFeeRate     Float              @default(0.15)
+  fbaFeePerUnit       Float
+  logisticsFeePerUnit Float
+  problemProfile      String
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+  metrics             DemoDailyMetric[]
+  campaigns           DemoAdCampaign[]
+  inventory           DemoInventory?
+
+  @@unique([storeId, asin])
+  @@index([storeId])
+}
+
+model DemoDailyMetric {
+  id          String      @id @default(cuid())
+  productId   String
+  product     DemoProduct @relation(fields: [productId], references: [id], onDelete: Cascade)
+  date        DateTime
+  sessions    Int
+  orders      Int
+  units       Int
+  sales       Float
+  adSpend     Float
+  adSales     Float
+  adClicks    Int         @default(0)
+  refunds     Float       @default(0)
+  refundUnits Int         @default(0)
+
+  @@unique([productId, date])
+  @@index([productId, date])
+}
+
+model DemoAdCampaign {
+  id        String           @id @default(cuid())
+  productId String
+  product   DemoProduct      @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name      String
+  type      String           @default("sponsored_products")
+  status    String           @default("enabled")
+  createdAt DateTime         @default(now())
+  terms     DemoSearchTerm[]
+  dailies   DemoAdDaily[]
+
+  @@index([productId])
+}
+
+model DemoAdDaily {
+  id           String         @id @default(cuid())
+  campaignId   String
+  campaign     DemoAdCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  date         DateTime
+  impressions  Int
+  clicks       Int
+  spend        Float
+  orders       Int
+  sales        Float
+  placementTop Float          @default(0)
+  placementProduct Float      @default(0)
+  placementRest Float         @default(0)
+
+  @@unique([campaignId, date])
+  @@index([campaignId, date])
+}
+
+model DemoSearchTerm {
+  id         String         @id @default(cuid())
+  campaignId String
+  campaign   DemoAdCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  term       String
+  date       DateTime
+  impressions Int           @default(0)
+  clicks     Int
+  spend      Float
+  orders     Int
+  sales      Float
+
+  @@index([campaignId, date])
+  @@index([campaignId, term])
+}
+
+model DemoInventory {
+  id           String      @id @default(cuid())
+  productId    String      @unique
+  product      DemoProduct @relation(fields: [productId], references: [id], onDelete: Cascade)
+  unitsOnHand  Int
+  inboundUnits Int         @default(0)
+  updatedAt    DateTime    @updatedAt
+}
+
+// TikTok Shop Demo Store - demonstration data only (isDemo)
+model TikTokDemoStore {
+  id          String              @id @default(cuid())
+  name        String
+  marketplace String              @default("US")
+  currency    String              @default("USD")
+  isDemo      Boolean             @default(true)
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  products    TikTokDemoProduct[]
+  creators    TikTokDemoCreator[]
+}
+
+model TikTokDemoProduct {
+  id             String                   @id @default(cuid())
+  storeId        String
+  store          TikTokDemoStore          @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  productId      String
+  sku            String
+  title          String
+  category       String?
+  price          Float
+  problemProfile String
+  createdAt      DateTime                 @default(now())
+  updatedAt      DateTime                 @updatedAt
+  metrics        TikTokDemoDailyMetric[]
+  videos         TikTokDemoVideo[]
+
+  @@unique([storeId, productId])
+  @@index([storeId])
+}
+
+model TikTokDemoDailyMetric {
+  id           String            @id @default(cuid())
+  productId    String
+  product      TikTokDemoProduct @relation(fields: [productId], references: [id], onDelete: Cascade)
+  date         DateTime
+  exposure     Int
+  clicks       Int
+  orders       Int
+  gmv          Float
+  videoGmv     Float
+  creatorGmv   Float
+
+  @@unique([productId, date])
+  @@index([productId, date])
+}
+
+model TikTokDemoCreator {
+  id        String             @id @default(cuid())
+  storeId   String
+  store     TikTokDemoStore    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  handle    String
+  displayName String
+  niche     String?
+  createdAt DateTime           @default(now())
+  videos    TikTokDemoVideo[]
+
+  @@unique([storeId, handle])
+  @@index([storeId])
+}
+
+model TikTokDemoVideo {
+  id          String             @id @default(cuid())
+  productId   String
+  product     TikTokDemoProduct  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  creatorId   String?
+  creator     TikTokDemoCreator? @relation(fields: [creatorId], references: [id], onDelete: SetNull)
+  title       String
+  theme       String
+  publishedAt DateTime
+  dailies     TikTokDemoVideoDaily[]
+
+  @@index([productId])
+  @@index([creatorId])
+  @@index([theme])
+}
+
+model TikTokDemoVideoDaily {
+  id            String          @id @default(cuid())
+  videoId       String
+  video         TikTokDemoVideo @relation(fields: [videoId], references: [id], onDelete: Cascade)
+  date          DateTime
+  views         Int
+  productClicks Int
+  orders        Int
+  gmv           Float
+
+  @@unique([videoId, date])
+  @@index([videoId, date])
+}

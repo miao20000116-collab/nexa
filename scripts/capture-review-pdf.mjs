@@ -1,0 +1,329 @@
+/**
+ * Full-page screenshot pack + review PDF for 创作 / 跨境商业.
+ * Usage: node scripts/capture-review-pdf.mjs
+ */
+import { chromium } from "playwright";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.resolve(__dirname, "..");
+const OUT = path.join(ROOT, "docs", "review-pack");
+const SHOTS = path.join(OUT, "screenshots");
+const BASE = process.env.NEXA_BASE_URL || "http://localhost:3000";
+
+const PAGES = [
+  { id: "00-home", url: "/", title: "首页", module: "入口" },
+  { id: "01-create-hub", url: "/create", title: "创作中心", module: "创作" },
+  { id: "02-create-image", url: "/create/image", title: "AI 图片生产", module: "创作" },
+  {
+    id: "03-create-workbench",
+    url: "/create/cp_1788358781551_n3a0wb3",
+    title: "创作工作台（项目详情）",
+    module: "创作",
+  },
+  { id: "04-assets", url: "/assets", title: "我的素材", module: "创作" },
+  { id: "05-publish", url: "/publish", title: "发布中心", module: "创作" },
+  { id: "10-commerce-hub", url: "/commerce", title: "跨境商业入口", module: "跨境" },
+  { id: "11-amz-overview", url: "/commerce/amazon", title: "Amazon 经营概览", module: "跨境-Amazon" },
+  { id: "12-amz-products", url: "/commerce/amazon/products", title: "Amazon 商品诊断列表", module: "跨境-Amazon" },
+  {
+    id: "13-amz-product-detail",
+    url: "/commerce/amazon/products/prod_portable_blender",
+    title: "Amazon 商品诊断详情",
+    module: "跨境-Amazon",
+  },
+  { id: "14-amz-ads", url: "/commerce/amazon/ads", title: "Amazon 广告诊断", module: "跨境-Amazon" },
+  { id: "15-amz-profit", url: "/commerce/amazon/profit", title: "Amazon 利润", module: "跨境-Amazon" },
+  { id: "16-amz-inventory", url: "/commerce/amazon/inventory", title: "Amazon 库存风险", module: "跨境-Amazon" },
+  { id: "20-tt-overview", url: "/commerce/tiktok", title: "TikTok Shop 经营概览", module: "跨境-TikTok" },
+  { id: "21-tt-products", url: "/commerce/tiktok/products", title: "TikTok 商品诊断列表", module: "跨境-TikTok" },
+  {
+    id: "22-tt-product-detail",
+    url: "/commerce/tiktok/products/tt_prod_blender",
+    title: "TikTok 商品诊断详情",
+    module: "跨境-TikTok",
+  },
+  { id: "23-tt-content", url: "/commerce/tiktok/content", title: "TikTok 内容经营", module: "跨境-TikTok" },
+  { id: "24-tt-creators", url: "/commerce/tiktok/creators", title: "Creator / Affiliate", module: "跨境-TikTok" },
+];
+
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function buildHtml(shotMeta) {
+  const shotBlocks = shotMeta
+    .map((s) => {
+      const rel = `screenshots/${s.file}`;
+      return `
+      <section class="page-shot">
+        <h3>${escapeHtml(s.title)}</h3>
+        <p class="meta">${escapeHtml(s.module)} · ${escapeHtml(s.url)} · 整页截图 ${s.width}×${s.height}px</p>
+        <img src="${rel}" alt="${escapeHtml(s.title)}" />
+      </section>`;
+    })
+    .join("\n");
+
+  return `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>Nexa 创作 & 跨境商业 · 功能与页面评审包</title>
+<style>
+  @page { size: A4; margin: 14mm 12mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif;
+    color: #18181b;
+    line-height: 1.55;
+    font-size: 12.5px;
+    margin: 0;
+  }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  h2 { font-size: 16px; margin: 28px 0 10px; border-bottom: 1px solid #e4e4e7; padding-bottom: 6px; page-break-after: avoid; }
+  h3 { font-size: 13.5px; margin: 0 0 4px; page-break-after: avoid; }
+  p { margin: 0 0 8px; }
+  .sub { color: #71717a; font-size: 12px; margin-bottom: 18px; }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0 16px; font-size: 11.5px; }
+  th, td { border: 1px solid #e4e4e7; padding: 6px 8px; vertical-align: top; text-align: left; }
+  th { background: #fafafa; font-weight: 600; }
+  .note { background: #fafafa; border: 1px solid #eee; padding: 10px 12px; border-radius: 8px; margin: 10px 0 16px; }
+  .page-shot { page-break-before: always; margin-top: 0; }
+  .page-shot img {
+    width: 100%;
+    height: auto;
+    border: 1px solid #e4e4e7;
+    border-radius: 6px;
+    display: block;
+  }
+  .meta { color: #71717a; font-size: 11px; margin-bottom: 8px; }
+  ul { margin: 4px 0 12px; padding-left: 18px; }
+  li { margin-bottom: 3px; }
+  .tag { display: inline-block; background: #f4f4f5; border-radius: 4px; padding: 1px 6px; font-size: 10.5px; color: #52525b; }
+</style>
+</head>
+<body>
+  <h1>Nexa · 创作 & 跨境商业功能评审包</h1>
+  <p class="sub">生成时间：${new Date().toLocaleString("zh-CN")} · 基址 ${escapeHtml(BASE)} · 截图均为浏览器整页（fullPage，含需滚动部分）</p>
+
+  <div class="note">
+    <strong>给其他 Agent / 评审的使用说明：</strong>
+    本文档重点覆盖「创作」与「跨境商业」的页面分布、功能点与具体操作。截图为整页（fullPage），含需滚动部分。跨境模块为 Demo Store；截图前已用演示账号（pro）登录，以便拉取演示经营数据。
+  </div>
+
+  <h2>1. 模块内容分布总览</h2>
+  <table>
+    <tr><th>模块</th><th>页面 / 路由</th><th>内容职责</th></tr>
+    <tr><td>创作中心</td><td>/create</td><td>选择开始方式、填写目标/类型/平台、创建项目；列出历史项目</td></tr>
+    <tr><td>创作工作台</td><td>/create/[id]</td><td>时间线、字段编辑、AI 生成/改写、预览、保存、标记完成、发布准备</td></tr>
+    <tr><td>AI 图片</td><td>/create/image</td><td>独立图片生产工作室（生成 / 编辑链路）</td></tr>
+    <tr><td>素材库</td><td>/assets</td><td>上传与管理图片/视频/文档，供创作引用</td></tr>
+    <tr><td>发布</td><td>/publish</td><td>发布预览、渠道连接、重试等</td></tr>
+    <tr><td>跨境入口</td><td>/commerce</td><td>Amazon / TikTok Shop 双入口</td></tr>
+    <tr><td>Amazon</td><td>/commerce/amazon/*</td><td>概览→商品/广告诊断→利润→库存；可下钻到商品详情并跳转创作</td></tr>
+    <tr><td>TikTok Shop</td><td>/commerce/tiktok/*</td><td>概览→商品诊断→内容经营→Creator/Affiliate</td></tr>
+  </table>
+
+  <h2>2. 创作模块 · 功能点与具体操作</h2>
+  <h3>2.1 创作中心（/create）</h3>
+  <table>
+    <tr><th>功能点</th><th>用户操作</th><th>系统行为</th></tr>
+    <tr><td>六种开始方式</td><td>点击：从想法 / 搜索结果 / 工作区 / 我的素材 / 商品诊断 / 链接</td><td>进入对应表单；部分模式要求选工作区或粘贴链接</td></tr>
+    <tr><td>填写目标</td><td>输入「我要完成什么」</td><td>作为项目 goal / brief 上下文</td></tr>
+    <tr><td>内容类型</td><td>选择：社媒图文 / 短视频脚本 / 图片 / 文案</td><td>影响工作台字段与生成提示</td></tr>
+    <tr><td>目标平台</td><td>选择：小红书 / TikTok / 抖音 / X / Instagram / LinkedIn</td><td>影响平台适配与字段标签</td></tr>
+    <tr><td>创建项目</td><td>点击创建</td><td>POST /api/create → 跳转 /create/[id]</td></tr>
+    <tr><td>历史项目</td><td>点击列表项</td><td>进入已有工作台</td></tr>
+    <tr><td>快捷入口</td><td>点「AI 图片生产」「我的素材」</td><td>跳转 /create/image、/assets</td></tr>
+  </table>
+
+  <h3>2.2 创作工作台（/create/[id]）</h3>
+  <table>
+    <tr><th>功能点</th><th>用户操作</th><th>系统行为</th></tr>
+    <tr><td>改标题</td><td>编辑标题后失焦</td><td>PATCH 保存 title</td></tr>
+    <tr><td>时间线</td><td>查看目标→上下文→计划→草稿→适配→质检→预览→发布</td><td>展示创作进度状态</td></tr>
+    <tr><td>字段编辑</td><td>编辑标题/Hook/正文/结构/CTA/Hashtags/封面建议</td><td>本地编辑；保存写入项目</td></tr>
+    <tr><td>字段 AI 动作</td><td>优化标题 / 更自然 / 更专业 / 缩短 / 增加信息密度 / 重新生成封面建议</td><td>按字段改写（可能弹 Credits 确认）</td></tr>
+    <tr><td>AI 生成草稿</td><td>点击主按钮</td><td>调用生成链路，填充统一内容结构</td></tr>
+    <tr><td>预览</td><td>切换预览 / 返回编辑</td><td>按平台样式预览产出</td></tr>
+    <tr><td>保存</td><td>点击保存</td><td>持久化 brief/内容</td></tr>
+    <tr><td>标记完成</td><td>点击</td><td>状态 → completed</td></tr>
+  </table>
+
+  <h3>2.3 相关周边</h3>
+  <ul>
+    <li><span class="tag">AI 图片生产</span> 独立 Image Studio：提示词生成/编辑图片任务</li>
+    <li><span class="tag">我的素材</span> 上传素材并在「从素材开始」时引用 assetIds</li>
+    <li><span class="tag">发布中心</span> 连接渠道、预览与发布记录（与创作完成态衔接）</li>
+  </ul>
+
+  <h2>3. 跨境商业 · 功能点与具体操作</h2>
+  <p>共性：<span class="tag">Demo Store</span> 演示数据；时间范围可切 <strong>7 / 30 / 90 天</strong>；智能结论面板可带「搜索 / 创作」行动。</p>
+
+  <h3>3.1 Amazon</h3>
+  <table>
+    <tr><th>页面</th><th>功能点</th><th>具体操作</th></tr>
+    <tr><td>经营概览</td><td>核心指标、异常商品、行动建议</td><td>切日期范围；点商品进诊断；跟随建议去搜索/创作</td></tr>
+    <tr><td>商品诊断列表</td><td>商品问题排序/列表</td><td>进入某个 ASIN 详情</td></tr>
+    <tr><td>商品诊断详情</td><td>结论 + 证据 + Intelligence Findings</td><td>查看 CVR/流量等证据；一键带结论去创作</td></tr>
+    <tr><td>广告诊断</td><td>花费、ACOS、词/版位问题</td><td>切范围；下钻异常广告结构</td></tr>
+    <tr><td>利润</td><td>销售额、费用、毛利结构</td><td>看演示利润拆解</td></tr>
+    <tr><td>库存风险</td><td>在库/在途、断货风险</td><td>识别库存风险商品</td></tr>
+  </table>
+
+  <h3>3.2 TikTok Shop</h3>
+  <table>
+    <tr><th>页面</th><th>功能点</th><th>具体操作</th></tr>
+    <tr><td>经营概览</td><td>内容→商品→创作者链路指标</td><td>切范围；跳转内容/商品</td></tr>
+    <tr><td>商品诊断</td><td>商品表现与问题</td><td>进入详情看结论与证据</td></tr>
+    <tr><td>内容经营</td><td>视频内容表现列表</td><td>看视频与商品关联经营数据</td></tr>
+    <tr><td>Creator / Affiliate</td><td>达人与分销表现</td><td>评估合作达人效果</td></tr>
+  </table>
+
+  <h2>4. 已知薄弱点（供优化讨论）</h2>
+  <ul>
+    <li>跨境均为 Demo，缺少真实账号连接与权限边界说明的产品化呈现。</li>
+    <li>创作工作台信息密度高，时间线 + 多字段 + Credits 确认叠加，窄屏/首次使用成本偏高。</li>
+    <li>「诊断 → 搜索 → 创作 → 发布」闭环在 UI 上存在入口，但路径文案/引导不够连续。</li>
+    <li>创作历史项目偏多（含 smoke 测试数据），列表噪音大。</li>
+    <li>首页与结果页近期改动较多，创作/跨境视觉语言尚未完全统一（卡片密度、导航层级）。</li>
+  </ul>
+
+  <h2>5. 整页截图附录</h2>
+  <p class="sub">以下每页均为 fullPage 截图（整页高度，非仅可视窗口）。</p>
+  ${shotBlocks}
+</body>
+</html>`;
+}
+
+async function main() {
+  fs.mkdirSync(SHOTS, { recursive: true });
+
+  const browser = await chromium.launch({ headless: true });
+  const context = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    deviceScaleFactor: 1,
+  });
+  const page = await context.newPage();
+  page.setDefaultTimeout(90000);
+
+  // Commerce APIs require login — use demo pro session
+  console.log("login demo pro…");
+  const loginRes = await context.request.post(`${BASE}/api/auth/demo`, {
+    data: { tier: "pro" },
+  });
+  console.log("login status", loginRes.status());
+  if (!loginRes.ok()) {
+    console.error(await loginRes.text());
+    throw new Error("demo login failed");
+  }
+
+  const shotMeta = [];
+
+  for (const item of PAGES) {
+    const url = BASE + item.url;
+    console.log("shot", item.id, url);
+    try {
+      await page.goto(url, { waitUntil: "networkidle", timeout: 90000 });
+    } catch {
+      await page.goto(url, { waitUntil: "domcontentloaded", timeout: 90000 });
+    }
+
+    // Wait out client fetches / loading placeholders
+    await page.waitForTimeout(800);
+    try {
+      await page.waitForFunction(
+        () => {
+          const t = document.body?.innerText || "";
+          if (/正在加载|正在诊断|加载中/.test(t) && t.length < 800) return false;
+          return true;
+        },
+        { timeout: 45000 }
+      );
+    } catch {
+      /* continue with whatever rendered */
+    }
+    await page.waitForTimeout(600);
+
+    await page.evaluate(async () => {
+      await new Promise((r) => {
+        let y = 0;
+        const step = () => {
+          const max = Math.max(
+            document.body.scrollHeight,
+            document.documentElement.scrollHeight
+          );
+          y += 700;
+          window.scrollTo(0, y);
+          if (y < max + 700) requestAnimationFrame(step);
+          else {
+            window.scrollTo(0, 0);
+            setTimeout(r, 250);
+          }
+        };
+        step();
+      });
+    });
+
+    const file = `${item.id}.png`;
+    const fp = path.join(SHOTS, file);
+    await page.screenshot({ path: fp, fullPage: true, type: "png" });
+    const box = await page.evaluate(() => ({
+      width: Math.max(
+        document.body.scrollWidth,
+        document.documentElement.scrollWidth
+      ),
+      height: Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight
+      ),
+    }));
+    shotMeta.push({ ...item, file, ...box });
+    console.log("  ok", box.width, "x", box.height);
+  }
+
+  const htmlPath = path.join(OUT, "review.html");
+  fs.writeFileSync(htmlPath, buildHtml(shotMeta), "utf8");
+  console.log("html", htmlPath);
+
+  // Print HTML to PDF via Chromium (good CJK support)
+  const pdfPage = await context.newPage();
+  await pdfPage.goto("file://" + htmlPath.replace(/\\/g, "/"), {
+    waitUntil: "networkidle",
+  });
+  const pdfPath = path.join(OUT, "Nexa_创作与跨境商业_功能评审包.pdf");
+  await pdfPage.pdf({
+    path: pdfPath,
+    format: "A4",
+    printBackground: true,
+    margin: { top: "12mm", bottom: "12mm", left: "10mm", right: "10mm" },
+  });
+  console.log("pdf", pdfPath);
+
+  await browser.close();
+
+  const manifest = {
+    generatedAt: new Date().toISOString(),
+    base: BASE,
+    pdf: pdfPath,
+    html: htmlPath,
+    screenshots: shotMeta,
+  };
+  fs.writeFileSync(
+    path.join(OUT, "manifest.json"),
+    JSON.stringify(manifest, null, 2),
+    "utf8"
+  );
+  console.log("done", shotMeta.length, "pages");
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

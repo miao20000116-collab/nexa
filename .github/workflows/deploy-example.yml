@@ -1,0 +1,48 @@
+# Optional CI examples — manual by default (save Netlify build quota)
+
+name: nexa-ci-example
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Install
+        run: npm ci
+        env:
+          # prisma generate during postinstall
+          DATABASE_URL: postgresql://ci:ci@127.0.0.1:5432/ci?schema=public
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Lint
+        run: npm run lint
+      - name: Build
+        run: npm run build
+        env:
+          DATABASE_URL: postgresql://ci:ci@127.0.0.1:5432/ci?schema=public
+          NEXT_PUBLIC_APP_URL: http://localhost:3000
+
+  # Intentionally NOT auto-triggering Netlify.
+  # Prefer Netlify ↔ Git integration after env vars are ready,
+  # or call Netlify Build Hook manually once.
+  # notify-netlify:
+  #   needs: verify
+  #   runs-on: ubuntu-latest
+  #   if: false
+  #   steps:
+  #     - name: Trigger Netlify build hook
+  #       run: curl -X POST -d {} "$NETLIFY_BUILD_HOOK"
+  #       env:
+  #         NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}

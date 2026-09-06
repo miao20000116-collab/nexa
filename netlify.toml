@@ -1,0 +1,34 @@
+# Netlify — overseas preview only (NOT China mainland production primary).
+# Docs: https://docs.netlify.com/build/frameworks/framework-setup-guides/nextjs/overview/
+#
+# CRITICAL before first deploy:
+# 1. Set all required env vars in Netlify UI (see .env.production.example + deploy/NETLIFY.md)
+# 2. DATABASE_URL must point to a reachable Postgres (Neon/Supabase/Prisma Postgres)
+# 3. Locally run: npm run typecheck && npm run lint && npm run build
+# 4. Only then click Deploy — build minutes are limited
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
+  NEXA_RUNTIME = "serverless"
+  # Do NOT set PRISMA_CLI_BINARY_TARGETS here — it breaks Windows local CLI builds
+  # (Unknown binaryTarget native). Engines come from prisma/schema.prisma binaryTargets.
+
+# Do NOT pin @netlify/plugin-nextjs unless debugging — Netlify auto-injects OpenNext.
+# [[plugins]]
+#   package = "@netlify/plugin-nextjs"
+
+[functions]
+  # Long AI jobs may still time out; full worker belongs on Tencent Cloud.
+  node_bundler = "esbuild"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"

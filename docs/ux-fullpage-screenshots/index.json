@@ -1,0 +1,268 @@
+[
+  {
+    "name": "00-home",
+    "path": "/",
+    "file": "00-home.png",
+    "scrollHeight": 900,
+    "title": "Nexa"
+  },
+  {
+    "name": "01-search",
+    "path": "/search?q=%E7%BE%8E%E5%9B%BD%20AI%20%E7%9C%BC%E9%95%9C%E5%B8%82%E5%9C%BA%E6%9C%80%E8%BF%91%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88%EF%BC%9F",
+    "file": "01-search.png",
+    "scrollHeight": 3267,
+    "title": "Nexa"
+  },
+  {
+    "name": "02-read",
+    "path": "/read?url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FRetrieval-augmented_generation",
+    "file": "02-read.png",
+    "scrollHeight": 900,
+    "title": "Nexa"
+  },
+  {
+    "name": "03-workspace-list",
+    "path": "/workspace",
+    "file": "03-workspace-list.png",
+    "scrollHeight": 900,
+    "title": "Nexa"
+  },
+  {
+    "name": "04-create-hub",
+    "path": "/create",
+    "file": "04-create-hub.png",
+    "scrollHeight": 1204,
+    "title": "Nexa"
+  },
+  {
+    "name": "05-create-image",
+    "path": "/create/image",
+    "file": "05-create-image.png",
+    "scrollHeight": 900,
+    "title": "Nexa"
+  },
+  {
+    "name": "06-assets",
+    "path": "/assets",
+    "file": "06-assets.png",
+    "scrollHeight": 900,
+    "title": "Nexa"
+  },
+  {
+    "name": "07-publish",
+    "path": "/publish",
+    "file": "07-publish.png",
+    "scrollHeight": 1618,
+    "title": "Nexa"
+  },
+  {
+    "name": "08-commerce-hub",
+    "path": "/commerce",
+    "file": "08-commerce-hub.png",
+    "scrollHeight": 1134,
+    "title": "Nexa"
+  },
+  {
+    "name": "10-amazon-overview",
+    "path": "/commerce/amazon",
+    "file": "10-amazon-overview.png",
+    "scrollHeight": 4057,
+    "title": "Nexa"
+  },
+  {
+    "name": "11-amazon-products",
+    "path": "/commerce/amazon/products",
+    "file": "11-amazon-products.png",
+    "scrollHeight": 2631,
+    "title": "Nexa"
+  },
+  {
+    "name": "12-amazon-product-detail",
+    "path": "/commerce/amazon/products/prod_portable_blender",
+    "file": "12-amazon-product-detail.png",
+    "scrollHeight": 6021,
+    "title": "Nexa"
+  },
+  {
+    "name": "13-amazon-selection",
+    "path": "/commerce/amazon/selection",
+    "file": "13-amazon-selection.png",
+    "scrollHeight": 3717,
+    "title": "Nexa"
+  },
+  {
+    "name": "14-amazon-compliance",
+    "path": "/commerce/amazon/compliance",
+    "file": "14-amazon-compliance.png",
+    "scrollHeight": 3963,
+    "title": "Nexa"
+  },
+  {
+    "name": "15-amazon-customer",
+    "path": "/commerce/amazon/customer",
+    "file": "15-amazon-customer.png",
+    "scrollHeight": 3027,
+    "title": "Nexa"
+  },
+  {
+    "name": "16-amazon-ads",
+    "path": "/commerce/amazon/ads",
+    "file": "16-amazon-ads.png",
+    "scrollHeight": 3145,
+    "title": "Nexa"
+  },
+  {
+    "name": "17-amazon-profit",
+    "path": "/commerce/amazon/profit",
+    "file": "17-amazon-profit.png",
+    "scrollHeight": 3365,
+    "title": "Nexa"
+  },
+  {
+    "name": "18-amazon-inventory",
+    "path": "/commerce/amazon/inventory",
+    "file": "18-amazon-inventory.png",
+    "scrollHeight": 2756,
+    "title": "Nexa"
+  },
+  {
+    "name": "20-tiktok-overview",
+    "path": "/commerce/tiktok",
+    "file": "20-tiktok-overview.png",
+    "scrollHeight": 2655,
+    "title": "Nexa"
+  },
+  {
+    "name": "21-tiktok-products",
+    "path": "/commerce/tiktok/products",
+    "file": "21-tiktok-products.png",
+    "scrollHeight": 1670,
+    "title": "Nexa"
+  },
+  {
+    "name": "22-tiktok-product-detail",
+    "path": "/commerce/tiktok/products/TTS-BLEND-01",
+    "file": "22-tiktok-product-detail.png",
+    "scrollHeight": 5391,
+    "title": "Nexa"
+  },
+  {
+    "name": "23-tiktok-selection",
+    "path": "/commerce/tiktok/selection",
+    "file": "23-tiktok-selection.png",
+    "scrollHeight": 2756,
+    "title": "Nexa"
+  },
+  {
+    "name": "24-tiktok-compliance",
+    "path": "/commerce/tiktok/compliance",
+    "file": "24-tiktok-compliance.png",
+    "scrollHeight": 2900,
+    "title": "Nexa"
+  },
+  {
+    "name": "25-tiktok-customer",
+    "path": "/commerce/tiktok/customer",
+    "file": "25-tiktok-customer.png",
+    "scrollHeight": 2066,
+    "title": "Nexa"
+  },
+  {
+    "name": "26-tiktok-content",
+    "path": "/commerce/tiktok/content",
+    "file": "26-tiktok-content.png",
+    "scrollHeight": 2626,
+    "title": "Nexa"
+  },
+  {
+    "name": "27-tiktok-creators",
+    "path": "/commerce/tiktok/creators",
+    "file": "27-tiktok-creators.png",
+    "scrollHeight": 1825,
+    "title": "Nexa"
+  },
+  {
+    "name": "30-account",
+    "path": "/account",
+    "file": "30-account.png",
+    "scrollHeight": 941,
+    "title": "Nexa"
+  },
+  {
+    "name": "31-account-login",
+    "path": "/account/login",
+    "file": "31-account-login.png",
+    "scrollHeight": 1305,
+    "title": "Nexa"
+  },
+  {
+    "name": "32-account-credits",
+    "path": "/account/credits",
+    "file": "32-account-credits.png",
+    "scrollHeight": 900,
+    "title": "Nexa"
+  },
+  {
+    "name": "33-account-memory",
+    "path": "/account/memory",
+    "file": "33-account-memory.png",
+    "scrollHeight": 900,
+    "title": "Nexa"
+  },
+  {
+    "name": "34-account-connections",
+    "path": "/account/connections",
+    "file": "34-account-connections.png",
+    "scrollHeight": 1257,
+    "title": "Nexa"
+  },
+  {
+    "name": "35-account-privacy",
+    "path": "/account/privacy",
+    "file": "35-account-privacy.png",
+    "scrollHeight": 900,
+    "title": "Nexa"
+  },
+  {
+    "name": "40-create-workbench",
+    "path": "/create/cp_1788526799438_d773fnt",
+    "file": "40-create-workbench.png",
+    "scrollHeight": 1533,
+    "title": "Nexa"
+  },
+  {
+    "name": "41-publish-detail",
+    "path": "/publish/cp_1788526799438_d773fnt",
+    "file": "41-publish-detail.png",
+    "scrollHeight": 900,
+    "title": "Nexa"
+  },
+  {
+    "name": "42-workspace-detail",
+    "path": "",
+    "file": "42-workspace-detail.png",
+    "scrollHeight": 900,
+    "title": ""
+  },
+  {
+    "name": "43-workspace-research",
+    "path": "",
+    "file": "43-workspace-research.png",
+    "scrollHeight": 900,
+    "title": ""
+  },
+  {
+    "name": "90-commerce-workspace-404",
+    "path": "/commerce/workspace",
+    "file": "90-commerce-workspace-404.png",
+    "scrollHeight": 957,
+    "title": "Nexa"
+  },
+  {
+    "name": "91-commerce-metrics-404",
+    "path": "/commerce/metrics",
+    "file": "91-commerce-metrics-404.png",
+    "scrollHeight": 957,
+    "title": "Nexa"
+  }
+]
